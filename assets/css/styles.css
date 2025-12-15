@@ -184,6 +184,7 @@ a:hover {
   font-weight: 500;
   padding: 0.25rem 0;
   position: relative;
+  margin-left: 1rem;
 }
 
 .main-nav .nav-links li a::after {
@@ -504,7 +505,7 @@ a:hover {
   border-radius: 8px;
   box-shadow: var(--shadow);
   padding: 2rem;
-  margin-top: -3rem; /* pull up over the header for a layered effect */
+  margin-top: -2rem; /* pull up over the header for a layered effect */
   position: relative;
   z-index: 1;
 }
@@ -940,4 +941,45 @@ body::-webkit-scrollbar-thumb {
 
 body::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
+}
+
+/* -----------------------------------------------------------------
+   Responsive tweaks
+
+   On small screens we want to ensure that the hero section text and
+   buttons remain centred, and that the contact icons shrink so that
+   all four can sit in a single row without wrapping.  We also tweak
+   nav padding and heading sizes for better readability on
+   smartphones.  Adjust the breakpoint to taste; 600px works well
+   across most devices.
+*/
+@media (max-width: 600px) {
+  /* Center hero text and call‑to‑action buttons */
+  .hero-section .col {
+    text-align: center;
+  }
+  /* Reduce contact card footprint so four cards fit on one line */
+  .contact-card {
+    width: 60px;
+    padding: 1rem;
+  }
+  .contact-card img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.25rem;
+  }
+  .contact-card span {
+    font-size: 0.60rem;
+    font-weight: 600;
+  }
+  /* Adjust navigation and hero heading sizes */
+  .main-nav {
+    padding: 0.75rem 1rem;
+  }
+  .hero-section h1 {
+    font-size: 1.75rem;
+  }
+  .hero-section p.lead {
+    font-size: 1rem;
+  }
 }
