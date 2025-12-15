@@ -1,0 +1,943 @@
+/*
+ * Custom styles for Samson Eniolorunda's portfolio website.
+ *
+ * This stylesheet is self‑contained and does not rely on any external
+ * frameworks or icon libraries. It defines a modern, colourful palette
+ * with a cohesive look across light and dark themes. Responsive flex
+ * utilities are provided to replace Bootstrap’s grid and navbar. Cards
+ * feature subtle shadows and hover effects, while progress bars show
+ * skill levels at a glance. A custom scrollbar and smooth transitions
+ * round out the professional feel.
+ */
+
+/* -------------------------------------------------------------
+   Root Variables
+   Define a vibrant yet mature colour scheme.  Colours are reused
+   throughout the site via CSS variables so that dark mode is a
+   simple class toggle.  Feel free to tweak these values to suit
+   your personal taste.
+ */
+
+:root {
+  /*
+   * Colour palette
+   *
+   * A deep purple paired with a rich blue makes for a mature yet colourful
+   * combination.  A warm orange accent adds vibrancy without feeling
+   * childish.  These variables feed into gradients, buttons and icons
+   * throughout the site.  Feel free to adjust the hex values if you'd
+   * like to fine‑tune the aesthetic further.
+   */
+  --primary-colour: #512da8;      /* deep purple */
+  --secondary-colour: #0062ac;    /* deep blue */
+  --accent-colour: #ff8c00;       /* warm orange */
+  /* Base background for light theme */
+  --bg-light: #f7f9fc;
+  /* Text colours for light theme */
+  --text-dark: #1f2a44;
+  --text-muted: #6b7a99;
+  /* Card and section backgrounds */
+  --card-bg: #ffffff;
+  /* Shadows */
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-hover: 0 8px 20px rgba(0,0,0,0.1);
+  /* Scrollbar colours */
+  --scrollbar-track: #e6eaf2;
+  --scrollbar-thumb: #b4c3d8;
+  --scrollbar-thumb-hover: #96a9c2;
+}
+
+/* Dark theme overrides.  Activated when the body has the
+   `.dark-theme` class.  These variables provide sufficient
+   contrast and retain the same hue relationships in a darker
+   palette. */
+body.dark-theme {
+  --bg-light: #0a1325;
+  --text-dark: #cdd6e3;
+  --text-muted: #7f92b0;
+  --card-bg: #162341;
+  --shadow: 0 4px 12px rgba(0,0,0,0.6);
+  --shadow-hover: 0 8px 20px rgba(0,0,0,0.8);
+  --scrollbar-track: #12203b;
+  --scrollbar-thumb: #29406d;
+  --scrollbar-thumb-hover: #375c9b;
+}
+
+/* -------------------------------------------------------------
+   Global Reset & Typography
+ */
+
+* {
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease,
+              box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+p {
+  margin: 0 0 1rem;
+  color: var(--text-muted);
+}
+
+a {
+  color: var(--primary-colour);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------
+   Layout Utilities
+   Simple flexbox utilities to approximate a responsive grid.  These
+   classes replace Bootstrap’s container/row/col system.
+ */
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.col {
+  flex: 1 1 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+@media (min-width: 768px) {
+  .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+  .col-md-8 { flex: 0 0 66.6667%; max-width: 66.6667%; }
+  .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; }
+}
+
+@media (min-width: 992px) {
+  .col-lg-4 { flex: 0 0 33.3333%; max-width: 33.3333%; }
+  .col-lg-5 { flex: 0 0 41.6667%; max-width: 41.6667%; }
+  .col-lg-7 { flex: 0 0 58.3333%; max-width: 58.3333%; }
+}
+
+/* Section padding helper */
+.py-5 { padding-top: 3rem; padding-bottom: 3rem; }
+
+/* -------------------------------------------------------------
+   Navigation Bar
+   A custom sticky nav bar with responsive menu toggle.  On small
+   screens the nav links collapse into a hamburger menu triggered via
+   CSS only (no JavaScript needed).  The theme toggle sits on the
+   right and flips between light and dark modes.
+ */
+
+.main-nav {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--primary-colour), var(--secondary-colour));
+  z-index: 1000;
+}
+
+.main-nav .logo a {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.main-nav .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav .nav-links li a {
+  color: #fff;
+  font-weight: 500;
+  padding: 0.25rem 0;
+  position: relative;
+}
+
+.main-nav .nav-links li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-colour);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.main-nav .nav-links li a:hover::after,
+.main-nav .nav-links li a.active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Hide nav links on small screens and display hamburger */
+.menu-toggle {
+  display: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  background: none;
+}
+
+@media (max-width: 768px) {
+  .main-nav .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    background: linear-gradient(135deg, var(--primary-colour), var(--secondary-colour));
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .main-nav.open .nav-links {
+    max-height: 300px;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  background: none;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* -------------------------------------------------------------
+   Hero Section
+   A striking introduction with a profile picture, heading and
+   animated typewriter tagline.  Responsive layout stacks content on
+   small screens and aligns side‑by‑side on larger ones.
+ */
+
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-colour), var(--secondary-colour));
+  color: #fff;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.hero-section .row {
+  align-items: center;
+}
+
+.hero-img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid var(--accent-colour);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.hero-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-section p.lead {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.hero-section .btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent-colour);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #e28a00;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* -------------------------------------------------------------
+   Skills Section
+   A polished presentation of your proficiencies.  Two options
+   are available: animated progress bars (legacy) and star ratings
+   (preferred).  Only one set will be displayed in the HTML at a
+   time.  Both share similar layout rules for consistency.
+ */
+
+.skills-section {
+  background: var(--card-bg);
+  padding: 3rem 0;
+}
+
+.skills-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-colour);
+}
+
+.skills-progress {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.skills-progress li {
+  flex: 1 1 calc(50% - 1rem);
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.skills-progress .skill-name {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark);
+}
+
+.progress-bar-wrapper {
+  width: 100%;
+  background: #d9dfe9;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--primary-colour), var(--secondary-colour));
+  height: 100%;
+  width: 0;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.skills-progress li:hover .progress-bar {
+  /* On hover, slightly widen the bar to emphasise the skill */
+  width: var(--hover-width);
+}
+
+/* Star rating list.  The markup for this uses
+   <ul class="skills-ratings"> with <li> items containing a skill name
+   and a .stars wrapper.  Each star is represented using the
+   Unicode ★ character.  The first N stars per skill have the
+   .filled class to indicate the rating. */
+.skills-ratings {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.skills-ratings li {
+  flex: 1 1 calc(50% - 1rem);
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.skills-ratings li:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.skills-ratings .skill-name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.skills-ratings .stars {
+  display: flex;
+}
+
+.skills-ratings .stars span {
+  font-size: 1.4rem;
+  margin-left: 0.15rem;
+  color: var(--secondary-colour);
+  transition: transform 0.3s ease;
+}
+
+.skills-ratings li:hover .stars span {
+  transform: scale(1.2);
+}
+
+.skills-ratings .stars span.filled {
+  color: var(--accent-colour);
+}
+
+/* -------------------------------------------------------------
+   CTA Section
+   Encourages visitors to get in touch.  Uses a complementary
+   gradient and a contrasting button.
+ */
+
+.cta-section {
+  background: linear-gradient(135deg, var(--secondary-colour), var(--primary-colour));
+  color: #fff;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.cta-section h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.cta-section p {
+  margin-bottom: 1.5rem;
+  color: #f0f3ff;
+}
+
+.cta-section .btn {
+  background: var(--accent-colour);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+}
+
+.cta-section .btn:hover {
+  background: #e28a00;
+}
+
+/* -------------------------------------------------------------
+   About Page
+   Styled card for the biography section with image, story and
+   education/hobby lists.  Each list item uses an emoji in place of
+   external icons for universal support.  The page begins with a
+   colourful header similar to the hero section.
+ */
+
+.about-header {
+  background: linear-gradient(135deg, var(--primary-colour), var(--secondary-colour));
+  color: #fff;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.about-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-top: -3rem; /* pull up over the header for a layered effect */
+  position: relative;
+  z-index: 1;
+}
+
+.about-card .row {
+  align-items: center;
+}
+
+.about-card img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--accent-colour);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.about-card h1 {
+  color: var(--primary-colour);
+  margin-top: 0;
+}
+
+/* About page: custom biography layout */
+.about-img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--accent-colour);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.info-block {
+  flex: 1 1 250px;
+}
+
+.info-block h3 {
+  margin-bottom: 0.5rem;
+  color: var(--primary-colour);
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-list li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+  color: var(--text-dark);
+}
+
+.info-list li::before {
+  content: '\2022'; /* bullet symbol */
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  color: var(--accent-colour);
+  font-size: 1.2rem;
+}
+
+.about-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.about-card li {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.about-card li span.emoji {
+  font-size: 1.2rem;
+  margin-right: 0.6rem;
+}
+
+/* -------------------------------------------------------------
+   Portfolio Page
+   Tabs replaced with filter buttons.  Cards display project
+   information with consistent styling.  A message appears for
+   categories with no items.
+ */
+
+.portfolio-header {
+  background: linear-gradient(135deg, var(--primary-colour), var(--secondary-colour));
+  color: #fff;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.portfolio-header h1 {
+  margin-bottom: 0.5rem;
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-buttons button {
+  background: var(--card-bg);
+  color: var(--text-dark);
+  border: 2px solid var(--primary-colour);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.filter-buttons button.active {
+  /* Active filter uses the accent colour for prominence */
+  background: var(--accent-colour);
+  border-color: var(--accent-colour);
+  color: #fff;
+}
+
+.filter-buttons button:hover {
+  /* Hover state uses the primary colour */
+  background: var(--primary-colour);
+  border-color: var(--primary-colour);
+  color: #fff;
+}
+
+.portfolio-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.project-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.project-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.project-card .card-body {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--primary-colour);
+}
+
+.project-card p {
+  flex: 1;
+  color: var(--text-muted);
+}
+
+.project-card .badges {
+  margin-bottom: 0.75rem;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--secondary-colour);
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  margin-right: 0.4rem;
+}
+
+.card-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.card-buttons a {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.card-buttons .demo-btn {
+  background: var(--accent-colour);
+}
+
+.card-buttons .github-btn {
+  background: var(--primary-colour);
+}
+
+.card-buttons .demo-btn:hover {
+  background: #e28a00;
+}
+
+.card-buttons .github-btn:hover {
+  background: #3f51b5;
+}
+
+.no-projects {
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 2rem;
+  font-size: 1.1rem;
+}
+
+/* -------------------------------------------------------------
+   Contact Page
+   Contact options displayed in a responsive grid with icons and
+   labels.  A simple form below allows visitors to send a message.
+ */
+
+.contact-header {
+  background: linear-gradient(135deg, var(--primary-colour), var(--secondary-colour));
+  color: #fff;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.contact-header h1 {
+  margin-bottom: 0.5rem;
+}
+
+.contact-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.contact-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  text-align: center;
+  width: 150px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: var(--text-dark);
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.contact-card svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--primary-colour);
+  margin-bottom: 0.5rem;
+}
+
+/* Contact icons delivered as images (PNG).  These share similar
+   dimensions to the SVG icons for consistent layout. */
+.contact-card img {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+}
+
+.contact-card span {
+  display: block;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* Icon circle used in contact options when custom SVGs are not used */
+.icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.5rem auto;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Contact Form */
+.contact-form {
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 2rem;
+}
+
+.contact-form h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--primary-colour);
+}
+
+.contact-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: #fdfdfd;
+  color: var(--text-dark);
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.contact-form .error {
+  color: #d9534f;
+  font-size: 0.875rem;
+}
+
+.contact-form .btn-submit {
+  background: var(--accent-colour);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.contact-form .btn-submit:hover {
+  background: #e28a00;
+}
+
+.contact-form .success-message {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #d4edda;
+  color: #155724;
+  border-radius: 4px;
+  display: none;
+}
+
+/* -------------------------------------------------------------
+   Footer
+ */
+
+footer {
+  background: var(--primary-colour);
+  color: #fff;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+footer p {
+  margin: 0 0 0.5rem;
+}
+
+footer .footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+footer .footer-links a {
+  color: #fff;
+  font-weight: 500;
+}
+
+footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------
+   Scrollbar Styles
+ */
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}

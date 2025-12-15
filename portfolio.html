@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- SEO metadata -->
+  <meta name="description" content="Browse the projects of Samson Eniolorunda – including responsive client portfolios and a real‑time digital clock app." />
+  <meta name="author" content="Samson Eniolorunda" />
+  <meta name="keywords" content="Samson Eniolorunda portfolio, web projects, digital clock" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <title>Portfolio | Samson Eniolorunda</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <div class="logo"><a href="index.html">Samson&nbsp;Eniolorunda</a></div>
+    <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="portfolio.html" class="active">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">☾</button>
+  </nav>
+
+  <!-- Portfolio Header -->
+  <header class="portfolio-header">
+    <div class="container">
+      <h1>My Work</h1>
+      <p>Projects demonstrating my skills and dedication to clean, responsive design.</p>
+    </div>
+  </header>
+
+  <section class="py-5">
+    <div class="container">
+      <!-- Filter Buttons -->
+      <div class="filter-buttons">
+        <button class="active" data-filter="all">All</button>
+        <button data-filter="web">Web</button>
+        <button data-filter="app">App</button>
+      </div>
+
+      <!-- Project Cards Grid -->
+      <div class="portfolio-grid" id="portfolioGrid">
+        <!-- Project 1: Client Portfolio Site -->
+        <div class="project-card" data-category="web">
+          <img src="assets/img/Lateef Kazeem site screenshot.png" alt="Lateef Kazeem site screenshot" />
+          <div class="card-body">
+            <h3>Client Portfolio Site</h3>
+            <p>A custom responsive portfolio built for Lateef&nbsp;Kazeem. This site highlights biography, projects and contact details with modern aesthetics.</p>
+            <div class="badges">
+              <span class="badge">HTML</span>
+              <span class="badge">CSS</span>
+              <span class="badge">JavaScript</span>
+              <span class="badge">Bootstrap</span>
+            </div>
+            <div class="card-buttons">
+              <a href="https://lateefkazeempro.vercel.app/" class="demo-btn" target="_blank" rel="noopener">Live Demo</a>
+              <a href="https://github.com/Samson-Eniolorunda/lateef-kazeem-portfolio" class="github-btn" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </div>
+        <!-- Project 2: Real-Time Digital Clock -->
+        <div class="project-card" data-category="web">
+          <img src="assets/img/Real-Time Digital Clock screenshot.png" alt="Real-Time Digital Clock screenshot" />
+          <div class="card-body">
+            <h3>Real‑Time Digital Clock</h3>
+            <p>A lightweight web app displaying the current time live, built with vanilla JavaScript and styled for readability.</p>
+            <div class="badges">
+              <span class="badge">HTML</span>
+              <span class="badge">CSS</span>
+              <span class="badge">JavaScript</span>
+            </div>
+            <div class="card-buttons">
+              <a href="https://realtimedigitalclock.vercel.app/" class="demo-btn" target="_blank" rel="noopener">Live Demo</a>
+              <a href="https://github.com/Samson-Eniolorunda/DigitalClock" class="github-btn" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </div>
+        <!-- Future project placeholder for App category -->
+        <div class="project-card" data-category="app" style="display: none;">
+          <img src="https://via.placeholder.com/600x400/f79f1f/ffffff?text=Coming+Soon" alt="Coming soon" />
+          <div class="card-body">
+            <h3>New App Launching Soon</h3>
+            <p>This space is reserved for a future mobile or desktop app project. Stay tuned for updates!</p>
+            <div class="badges">
+              <span class="badge">App</span>
+            </div>
+            <div class="card-buttons">
+              <a href="#" class="demo-btn" onclick="return false;">Coming Soon</a>
+              <a href="#" class="github-btn" onclick="return false;">TBD</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="no-projects" id="noProjects" style="display: none;">App projects coming soon.</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Samson&nbsp;Eniolorunda. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/Samson-Eniolorunda" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://x.com/s_eniolorunda_" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
