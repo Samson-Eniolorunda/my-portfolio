@@ -114,15 +114,13 @@ function initYear() {
   }
 }
 
-/* --- 3. THEME TOGGLE (System Sync) --- */
+/* --- 3. THEME TOGGLE (Session Persistence + System Auto-Detect) --- */
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
   const body = document.body;
-  
-  // Create the media query watcher
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-  // Helper: Update Body Class & Button Icon
+  // Helper: Apply theme & update icon
   function applyTheme(isDark) {
     if (isDark) {
       body.classList.add('dark-theme');
@@ -133,20 +131,36 @@ function initTheme() {
     }
   }
 
-  // 1. Initial Load: Always match System Setting
-  applyTheme(mediaQuery.matches);
+  // 1. Check Session Storage first (Maintains choice across pages)
+  const sessionPreference = sessionStorage.getItem('theme');
 
-  // 2. Live Listener: Instantly adapt if user changes Device Settings
+  if (sessionPreference === 'dark') {
+    applyTheme(true);
+  } else if (sessionPreference === 'light') {
+    applyTheme(false);
+  } else {
+    // No session preference? Default to System Settings
+    applyTheme(mediaQuery.matches);
+  }
+
+  // 2. Listen for System Changes
+  // Only auto-update if the user hasn't manually overridden the session
   mediaQuery.addEventListener('change', (e) => {
-    applyTheme(e.matches);
+    if (!sessionStorage.getItem('theme')) {
+      applyTheme(e.matches);
+    }
   });
 
-  // 3. Manual Toggle: Temporary override (resets on refresh)
+  // 3. Manual Toggle
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-      // Check current state by looking at the class
-      const isCurrentlyDark = body.classList.contains('dark-theme');
-      applyTheme(!isCurrentlyDark); // Flip it
+      const isDarkNow = body.classList.contains('dark-theme');
+      const newMode = !isDarkNow; // Flip current state
+      
+      applyTheme(newMode);
+      
+      // Save to Session Storage (Locks choice until browser closes)
+      sessionStorage.setItem('theme', newMode ? 'dark' : 'light');
     });
   }
 }
