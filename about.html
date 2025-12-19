@@ -1,4 +1,19 @@
 <!DOCTYPE html>
+<!-- ==========================================================================
+  FILE: about.html
+  PURPOSE: About page — background, education, and interests.
+
+  WHAT'S INSIDE:
+  - Shared site header/nav + floating scroll buttons
+  - About content container with profile image (floated on desktop) and biography text
+  - Two info cards: Education and Interests (styled with shared tech-card components)
+  - Shared footer with social links + auto-updated year
+
+  DEPENDENCIES:
+  - assets/css/styles.css  (about layout, float utilities, theme variables)
+  - assets/js/script.js    (theme toggle, mobile menu, scroll buttons, year update)
+  - CDN: Google Fonts + Font Awesome
+============================================================================= -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,89 +23,104 @@
   <meta name="author" content="Samson Eniolorunda" />
   <meta name="keywords" content="Samson Eniolorunda, about, biography, frontend developer, education" />
   <meta name="robots" content="index, follow" />
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+
+  <!-- About page -->
   <title>About | Samson Eniolorunda</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <!-- Typography: Google Fonts (Inter + Space Grotesk) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
+  <!-- Icons: Font Awesome (used for UI icons + social icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <!-- Main stylesheet: global layout, components, and themes -->
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="main-nav">
-    <!-- Move the menu toggle to the far left for improved mobile UX -->
-    <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
-    <div class="logo"><a href="index.html">Samson&nbsp;Eniolorunda</a></div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="about.html" class="active">About</a></li>
-      <li><a href="portfolio.html">Portfolio</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">☾</button>
-  </nav>
 
-  <!-- About Header -->
-  <header class="about-header">
-    <div class="container">
-      <h1>About Me</h1>
-      <p>Get to know the person behind the code</p>
+  <!-- Floating scroll controls (wired to script.js: #btnPageUp / #btnPageDown) -->
+  <div id="scrollNav" class="scroll-nav">
+    <button id="btnPageUp" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
+    <button id="btnPageDown" class="scroll-btn"><i class="fa-solid fa-chevron-down"></i></button>
+  </div>
+
+  <!-- Site header: logo + primary navigation + action buttons -->
+  <header class="site-header">
+    <div class="container nav-inner">
+      <!-- Brand / logo (links back to Home) -->
+      <div class="logo">
+        <a href="index.html">Samson Eniolorunda</a>
+      </div>
+      <!-- Primary nav links (mobile menu toggles this list) -->
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <!-- Header actions: theme toggle + mobile menu button -->
+      <div class="nav-actions">
+        <!-- Theme toggle button (adds/removes body.dark-theme; saved to localStorage) -->
+        <button id="themeToggle" class="theme-btn"><i class="fa-solid fa-moon"></i></button>
+        <!-- Mobile menu toggle (shows/hides .nav-links on small screens) -->
+        <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+      </div>
     </div>
   </header>
 
-  <!-- About Section -->
-  <section class="py-5">
-    <div class="container">
-      <div class="about-card">
-        <div class="row">
-          <!-- Profile Image -->
-          <div class="col-md-4 col text-center">
-            <img src="assets/img/profile.jpg" alt="Samson Eniolorunda portrait" class="about-img" />
+  <!-- Main page content -->
+  <!-- About page content wrapper -->
+  <main class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
+    <h1 class="section-title">About Me</h1>
+    
+    <!-- About layout: text + floating image + info cards -->
+    <div class="about-wrapper clearfix">
+      <div class="about-text">
+        <!-- Profile image (floats on desktop via .about-img-float) -->
+        <img src="assets/img/profile.jpg" alt="Samson Eniolorunda" class="hero-img-style about-img-float" />
+        <p>
+          Hi! I'm Samson. With a foundation in the humanities and a B.A. in History &amp; International Studies, I bring a unique perspective to web development.
+          My curiosity for how things work on the internet led me to pivot into technology.
+          Through the Product Hub Africa Front‑End Bootcamp, I mastered HTML, CSS, JavaScript, and responsive design, blending creativity with code to build meaningful user experiences.
+          Today I specialize in crafting beautiful, accessible interfaces. Each build deepens my appreciation for clean design, intuitive UX, and maintainable code. When I'm not coding, I'm usually exploring new tech trends or gaming.
+        </p>
+
+        <div class="tech-grid" style="padding-bottom: 0; margin-top: 3rem;">
+          <div class="tech-card">
+            <!-- Education card -->
+            <h3><i class="fa-solid fa-graduation-cap" style="color: #4F46E5;"></i> Education</h3>
+            <ul class="styled-list">
+              <li>B.A. History &amp; Intl. Studies</li>
+              <li>Front‑End Development (Product Hub Africa)</li>
+            </ul>
           </div>
-          <!-- Biography and details -->
-          <div class="col-md-8 col">
-            <h2>Hi, I'm Samson!</h2>
-            <p>
-              With a foundation in the humanities and a B.A. in History &amp; International Studies, I bring a unique perspective to web development.  My curiosity for how things work on the internet led me to pivot into technology.  Through the Product Hub Africa Front‑End Bootcamp I mastered HTML, CSS, JavaScript and responsive design, blending creativity with code to build meaningful user experiences.
-            </p>
-            <p>
-              Today I specialise in crafting beautiful, accessible interfaces.  I’ve delivered bespoke projects like a personal website for a local footballer Lateef Kazeem and a real‑time digital clock web app, demonstrating both client‑focused portfolio work and technical tinkering.  Each build deepens my appreciation for clean design, intuitive UX and maintainable code.
-            </p>
-            <p>
-              When I'm not coding you'll find me reading, gaming or exploring emerging technologies – hobbies that spark curiosity and fuel continuous learning.  I thrive on challenges and am always eager to collaborate on new ideas.
-            </p>
-            <div class="info-grid">
-              <div class="info-block">
-                <h3>Education</h3>
-                <ul class="info-list">
-                  <li>B.A. History &amp; International Studies – Adekunle Ajasin University</li>
-                  <li>Front‑End Development – Product Hub Africa Bootcamp</li>
-                </ul>
-              </div>
-              <div class="info-block">
-                <h3>Interests</h3>
-                <ul class="info-list">
-                  <li>Reading &amp; research</li>
-                  <li>Gaming</li>
-                  <li>Exploring new technologies</li>
-                </ul>
-              </div>
-            </div>
+          <div class="tech-card">
+            <!-- Interests card -->
+            <h3><i class="fa-solid fa-heart" style="color: #E11D48;"></i> Interests</h3>
+            <ul class="styled-list">
+              <li>Exploring new technologies</li>
+              <li>Football</li>
+              <li>Reading & Research</li>
+              <li>Video Gaming</li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>© 2025 Samson&nbsp;Eniolorunda. All rights reserved.</p>
-      <div class="footer-links">
-        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/Samson-Eniolorunda" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://x.com/s_eniolorunda_" target="_blank" rel="noopener">X</a>
+  <!-- Shared footer: copyright + social links -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2025</span> Samson Eniolorunda. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/Samson-Eniolorunda" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://x.com/s_eniolorunda_" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
       </div>
     </div>
   </footer>
 
+  <!-- Site-wide JavaScript (theme, menu, typing, filtering, scroll buttons, year) -->
   <script src="assets/js/script.js"></script>
 </body>
 </html>

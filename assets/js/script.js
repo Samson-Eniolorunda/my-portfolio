@@ -1,198 +1,225 @@
-/*
- * Custom JavaScript for Samson Eniolorunda's portfolio website.
- *
- * This script handles theme toggling, mobile navigation, typewriter
- * animation, contact form validation and portfolio filtering.  It
- * relies on simple DOM manipulation and does not require any
- * external libraries.
- */
+/* ==========================================================================
+  FILE: script.js
+  PROJECT: Samson Eniolorunda Portfolio Website — Frontend Logic
+  AUTHOR: Samson Eniolorunda
+  LAST UPDATED: December 19, 2025
 
-// Initialise theme and interactive behaviours when the DOM is ready
+  PURPOSE:
+  - Central JavaScript file used across ALL pages.
+  - Adds interactive behavior while keeping HTML/CSS clean and reusable.
+
+  FEATURES (INIT ORDER ON DOMContentLoaded):
+  1) Theme Toggle:
+     - Toggles body.dark-theme and saves preference in localStorage.
+     - Updates the toggle button icon (moon/sun).
+  2) Mobile Menu:
+     - Opens/closes the nav drawer on small screens.
+     - Auto-closes when a nav link is clicked.
+  3) Typewriter Effect (Home page only):
+     - Rotates through typedStrings inside the #typed element.
+  4) Portfolio Filter (Portfolio page only):
+     - Filters .project-card elements by data-category using .filter-btn buttons.
+     - Shows/hides #noProjects when nothing matches.
+  5) Contact Form (Contact page only):
+     - Demo handler: prevents submit, shows alert, resets the form.
+  6) Directional Scroll Buttons:
+     - Shows Up button when scrolling up (not near top)
+     - Shows Down button when scrolling down (not near bottom)
+  7) Auto Year:
+     - Updates #year in the footer to the current year.
+
+  NOTE:
+  - Each init function safely exits if its required DOM elements are not present.
+============================================================================= */
+
+// Rotating titles for the typewriter effect (Home page only).
+const typedStrings = [
+  'Front-End Developer', 
+  'Problem Solver', 
+  'Web Enthusiast'
+];
+
+// Typewriter state: current word index and current character position.
+let typedIndex = 0; // Which phrase in typedStrings is active
+let charIndex = 0; // Current character position inside the active phrase
+
+/* --- GLOBAL INIT --- */
+// Run feature initializers after the DOM is ready (safe for multi-page reuse).
 window.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  initMenuToggle();
-  initContactForm();
-  initPortfolioFilters();
+  initMenu();
   typeEffect();
+  initPortfolio();
+  initContact();
+  initDirectionalScroll(); // New Logic
+  initYear();              // New Logic
 });
 
-/* -------------------------------------------------------------
-   Theme Toggle
-   Reads the preferred theme from localStorage and updates the
-   document accordingly.  Clicking the theme button toggles between
-   light and dark modes and persists the choice.
- */
-function initTheme() {
-  const savedTheme = localStorage.getItem('theme');
-  const body = document.body;
-  const toggleBtn = document.getElementById('themeToggle');
-  if (savedTheme === 'dark') {
-    body.classList.add('dark-theme');
-    if (toggleBtn) toggleBtn.textContent = '☀';
-  } else {
-    body.classList.remove('dark-theme');
-    if (toggleBtn) toggleBtn.textContent = '☾';
+/* --- 1. DIRECTIONAL SCROLL UX --- */
+// Shows/hides floating scroll buttons based on scroll direction + page position.
+function initDirectionalScroll() {
+  const btnUp = document.getElementById('btnPageUp');
+  const btnDown = document.getElementById('btnPageDown');
+  
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+
+    // Detect Scroll Direction
+    if (currentScrollY > lastScrollY) {
+      // SCROLLING DOWN
+      if (btnUp) btnUp.classList.remove('show'); // Hide Up
+      // Show Down only if not at bottom
+      if (btnDown && currentScrollY < (maxScroll - 50)) {
+        btnDown.classList.add('show');
+      } else {
+        if(btnDown) btnDown.classList.remove('show');
+      }
+    } else {
+      // SCROLLING UP
+      if (btnDown) btnDown.classList.remove('show'); // Hide Down
+      // Show Up only if not at top
+      if (btnUp && currentScrollY > 50) {
+        btnUp.classList.add('show');
+      } else {
+        if(btnUp) btnUp.classList.remove('show');
+      }
+    }
+
+    lastScrollY = currentScrollY;
+  });
+
+  // Click Events
+  if (btnUp) {
+    btnUp.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
+  if (btnDown) {
+    btnDown.addEventListener('click', () => {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+  }
+}
+
+/* --- 2. AUTO UPDATE YEAR --- */
+// Updates the footer year automatically (avoids hardcoding).
+function initYear() {
+  const yearSpan = document.getElementById('year');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+}
+
+/* --- 3. THEME TOGGLE --- */
+// Theme toggle: reads/saves preference in localStorage and toggles body.dark-theme.
+function initTheme() {
+  const toggleBtn = document.getElementById('themeToggle');
+  const body = document.body;
+  const savedTheme = localStorage.getItem('theme'); // Read saved theme preference (if any)
+
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-theme'); // Enable dark theme styles
+    updateIcon(true);
+  }
+
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-      const isDark = body.classList.toggle('dark-theme');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      toggleBtn.textContent = isDark ? '☀' : '☾';
+      body.classList.toggle('dark-theme');
+      const isDark = body.classList.contains('dark-theme');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light'); // Persist theme preference
+      updateIcon(isDark);
+    });
+  }
+
+  function updateIcon(isDark) {
+    toggleBtn.innerHTML = isDark 
+      ? '<i class="fa-solid fa-sun"></i>' 
+      : '<i class="fa-solid fa-moon"></i>';
+  }
+}
+
+/* --- 4. MOBILE MENU --- */
+// Mobile menu: toggles the nav links list and closes it after clicking a link.
+function initMenu() {
+  const menuBtn = document.querySelector('.menu-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (menuBtn && navLinks) {
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      menuBtn.innerHTML = navLinks.classList.contains('open')
+        ? '<i class="fa-solid fa-xmark"></i>'
+        : '<i class="fa-solid fa-bars"></i>';
+    });
+    // Close on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
     });
   }
 }
 
-/* -------------------------------------------------------------
-   Mobile Navigation Toggle
-   When the hamburger button is clicked on small screens, toggle
-   the `.open` class on the nav element to reveal or hide the
-   collapsed menu.
- */
-function initMenuToggle() {
-  const menuToggle = document.querySelector('.menu-toggle');
-  const mainNav = document.querySelector('.main-nav');
-  if (menuToggle && mainNav) {
-    menuToggle.addEventListener('click', () => {
-      mainNav.classList.toggle('open');
-    });
-    // Close the menu when a nav link is clicked (useful on mobile)
-    const navLinks = mainNav.querySelectorAll('.nav-links a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mainNav.classList.remove('open');
-      });
-    });
-  }
-}
-
-/* -------------------------------------------------------------
-   Contact Form Validation
-   Validates fields on submission.  Shows inline error messages
-   and displays a success message when the form is valid.  Fields
-   are cleared after a successful submission.
- */
-function initContactForm() {
-  const form = document.getElementById('contactForm');
-  if (!form) return;
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const nameField = document.getElementById('name');
-    const emailField = document.getElementById('email');
-    const subjectField = document.getElementById('subject');
-    const messageField = document.getElementById('message');
-    let valid = true;
-    // Clear errors
-    form.querySelectorAll('.error').forEach(el => el.textContent = '');
-    // Validate name
-    if (!nameField.value.trim()) {
-      showError(nameField, 'Name is required');
-      valid = false;
-    }
-    // Validate email
-    if (!emailField.value.trim()) {
-      showError(emailField, 'Email is required');
-      valid = false;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
-      showError(emailField, 'Enter a valid email');
-      valid = false;
-    }
-    // Validate subject
-    if (!subjectField.value.trim()) {
-      showError(subjectField, 'Subject is required');
-      valid = false;
-    }
-    // Validate message
-    if (!messageField.value.trim()) {
-      showError(messageField, 'Message is required');
-      valid = false;
-    }
-    if (valid) {
-      const success = document.getElementById('form-success') || document.getElementById('form-success-message');
-      // Show success message
-      const successMessage = document.getElementById('form-success');
-      if (successMessage) {
-        successMessage.style.display = 'block';
-      }
-      // Clear fields
-      nameField.value = '';
-      emailField.value = '';
-      subjectField.value = '';
-      messageField.value = '';
-    }
-  });
-}
-
-function showError(inputElement, message) {
-  const errorElement = inputElement.nextElementSibling;
-  if (errorElement) {
-    errorElement.textContent = message;
-  }
-}
-
-/* -------------------------------------------------------------
-   Typewriter Effect
-   Cycles through an array of strings, typing each character
-   sequentially.  When a word is finished, it pauses briefly
-   before proceeding to the next word.  Adjust the `typedStrings`
-   array to customise the titles shown.
- */
-const typedStrings = [
-  'Front‑End Developer',
-  'Creative Problem Solver',
-  'Tech Enthusiast',
-  'Team Collaborator'
-];
-let typedIndex = 0;
-let charIndex = 0;
+/* --- 5. TYPEWRITER --- */
+// Typewriter effect: writes the current phrase into #typed and loops forever.
 function typeEffect() {
   const typedElement = document.getElementById('typed');
   if (!typedElement) return;
+
   if (typedIndex >= typedStrings.length) typedIndex = 0;
   const currentText = typedStrings[typedIndex];
+  
   typedElement.textContent = currentText.substring(0, charIndex++);
+
   if (charIndex > currentText.length) {
     charIndex = 0;
     typedIndex++;
-    setTimeout(typeEffect, 1000);
+    setTimeout(typeEffect, 1500);
   } else {
-    setTimeout(typeEffect, 120);
+    setTimeout(typeEffect, 80); // Slightly faster typing
   }
 }
 
-/* -------------------------------------------------------------
-   Portfolio Filtering
-   Filters project cards based on the selected category.  When a
-   filter button is clicked, it becomes active and the grid
-   updates to show only matching projects.  If no projects exist
-   for a category, a message is displayed.
- */
-function initPortfolioFilters() {
-  const filterContainer = document.querySelector('.filter-buttons');
-  const projects = document.querySelectorAll('.project-card');
-  const noProjects = document.getElementById('noProjects');
-  if (!filterContainer || projects.length === 0) return;
-  filterContainer.addEventListener('click', event => {
-    const button = event.target.closest('button');
-    if (!button) return;
-    // Update active state
-    filterContainer.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-    const filter = button.getAttribute('data-filter');
-    let hasVisible = false;
-    projects.forEach(card => {
-      const category = card.getAttribute('data-category');
-      if (filter === 'all' || category === filter) {
-        card.style.display = 'flex';
-        hasVisible = true;
-      } else {
-        card.style.display = 'none';
-      }
+/* --- 6. PORTFOLIO FILTER --- */
+// Portfolio filtering: shows/hides project cards using data-category.
+function initPortfolio() {
+  const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+  const msg = document.getElementById('noProjects');
+  if (!btns.length) return;
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      let count = 0;
+      
+      cards.forEach(card => {
+        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+          card.style.display = 'flex';
+          // Add fade in animation reset
+          card.style.opacity = '0';
+          setTimeout(() => card.style.opacity = '1', 50);
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      if (msg) msg.style.display = count === 0 ? 'block' : 'none';
     });
-    // Show or hide 'coming soon' message
-    if (filter === 'app' && !hasVisible && noProjects) {
-      noProjects.style.display = 'block';
-    } else if (noProjects) {
-      noProjects.style.display = 'none';
-    }
   });
+}
+
+/* --- 7. CONTACT FORM (Demo) --- */
+// Contact form handler: demo-only submit (prevents reload and resets the form).
+function initContact() {
+  const form = document.getElementById('contactForm');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Stop default browser form submit / page jump
+      alert('Message sent successfully! (This is a demo)');
+      form.reset();
+    });
+  }
 }

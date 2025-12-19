@@ -1,4 +1,20 @@
 <!DOCTYPE html>
+<!-- ==========================================================================
+  FILE: index.html
+  PURPOSE: Home/Landing page for Samson Eniolorunda's portfolio website.
+
+  WHAT'S INSIDE:
+  - Shared site header/nav (logo, page links, theme toggle, mobile menu button)
+  - Hero section with profile image + typewriter text (target: #typed)
+  - Tech Stack cards using Devicon + Font Awesome icons
+  - Floating scroll buttons (targets: #btnPageUp / #btnPageDown)
+  - Shared footer with social links + auto-updated year (target: #year)
+
+  DEPENDENCIES:
+  - assets/css/styles.css  (global layout, light/dark themes, responsiveness)
+  - assets/js/script.js    (theme toggle, menu logic, typing effect, scroll UX, year update)
+  - CDN: Google Fonts (Inter/Space Grotesk), Font Awesome, Devicon
+============================================================================= -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,116 +24,117 @@
   <meta name="author" content="Samson Eniolorunda" />
   <meta name="keywords" content="Samson Eniolorunda, frontend developer, portfolio, web developer, Lagos" />
   <meta name="robots" content="index, follow" />
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+
+  <!-- Title -->
   <title>Samson Eniolorunda | Frontend Developer</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <!-- Typography: Google Fonts (Inter + Space Grotesk) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
+  <!-- Icons: Font Awesome (used for UI icons + social icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <!-- Tech icons: Devicon (used in Tech Stack + project badges) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <!-- Main stylesheet: global layout, components, and themes -->
   <link rel="stylesheet" href="assets/css/styles.css" />
+
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="main-nav">
-    <!-- Move the menu toggle to the far left for improved mobile UX -->
-    <button class="menu-toggle" aria-label="Toggle navigation">☰</button>
-    <div class="logo"><a href="index.html">Samson&nbsp;Eniolorunda</a></div>
-    <ul class="nav-links">
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="portfolio.html">Portfolio</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">☾</button>
-  </nav>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-5 col-md-4 col text-center">
-          <img src="assets/img/profile.jpg" alt="Samson Eniolorunda portrait" class="hero-img" />
+  <!-- Floating scroll controls (wired to script.js: #btnPageUp / #btnPageDown) -->
+  <div id="scrollNav" class="scroll-nav">
+    <button id="btnPageUp" class="scroll-btn" aria-label="Scroll Up"><i class="fa-solid fa-chevron-up"></i></button>
+    <button id="btnPageDown" class="scroll-btn" aria-label="Scroll Down"><i class="fa-solid fa-chevron-down"></i></button>
+  </div>
+
+  <!-- Site header: logo + primary navigation + action buttons -->
+  <header class="site-header">
+    <div class="container nav-inner">
+      <!-- Brand / logo (links back to Home) -->
+      <div class="logo">
+        <a href="index.html">Samson Eniolorunda</a>
+      </div>
+      <!-- Primary nav links (mobile menu toggles this list) -->
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <!-- Header actions: theme toggle + mobile menu button -->
+      <div class="nav-actions">
+        <!-- Theme toggle button (adds/removes body.dark-theme; saved to localStorage) -->
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+        <!-- Mobile menu toggle (shows/hides .nav-links on small screens) -->
+        <button class="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main page content -->
+  <main>
+    <!-- HERO: Introduction + CTA buttons (home page) -->
+    <section class="home-hero">
+      <div class="container">
+        <!-- Profile image (stored in assets/img/) -->
+        <img src="assets/img/profile.jpg" alt="Samson Eniolorunda" class="hero-img-style" />
+        <h1>Hi, I'm Samson Eniolorunda</h1>
+        <!-- Typewriter text target (script.js writes rotating titles into #typed) -->
+        <p class="lead">I am a <span id="typed"></span></p>
+        <div class="btn-group">
+          <a href="portfolio.html" class="btn btn-primary">My Porfolio</a>
+          <a href="contact.html" class="btn btn-outline">Contact Me</a>
         </div>
-        <div class="col-lg-7 col-md-8 col">
-          <h1>Hello, I'm <span class="fw-bold">Samson&nbsp;Eniolorunda</span></h1>
-          <p class="lead">I'm a <span id="typed"></span></p>
-          <div class="btn-group">
-            <a href="portfolio.html" class="btn btn-primary">View Portfolio</a>
-            <a href="contact.html" class="btn btn-outline">Contact Me</a>
+      </div>
+    </section>
+
+    <!-- TECH STACK: quick overview of languages + tools -->
+    <section class="tech-section">
+      <div class="container">
+        <h2 class="section-title">
+          <i class="fa-solid fa-layer-group"></i> Tech Stack
+        </h2>
+             
+        <!-- Tech cards grid (responsive) -->
+        <div class="tech-grid">
+          <!-- Tech category card -->
+          <div class="tech-card">
+            <h3><i class="fa-solid fa-code" style="color:#2563EB;"></i> Languages</h3>
+            <ul class="styled-list">
+              <li><i class="devicon-html5-plain colored"></i> HTML 5</li>
+              <li><i class="devicon-css3-plain colored"></i> CSS 3</li>
+              <li><i class="devicon-javascript-plain colored"></i> JavaScript (ES6+)</li>
+              <li><i class="devicon-bootstrap-plain colored"></i> Bootstrap</li>
+            </ul>
+          </div>
+
+          <div class="tech-card">
+            <h3><i class="fa-solid fa-toolbox" style="color:#D97706;"></i> Tools</h3>
+            <ul class="styled-list">
+              <li><i class="devicon-vscode-plain colored"></i> VS Code Environment</li>
+              <li><i class="devicon-git-plain colored"></i> Git Version Control</li>
+              <li><i class="devicon-github-original colored"></i> GitHub Collaboration</li>
+              <li><i class="devicon-vercel-original colored"></i> Vercel Deployment</li>
+            </ul>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <!-- Skills Overview -->
-  <section class="skills-section">
-    <div class="container">
-      <h2>Skills Overview</h2>
-      <ul class="skills-ratings">
-        <li>
-          <span class="skill-name">HTML5</span>
-          <div class="stars">
-            <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
-          </div>
-        </li>
-        <li>
-          <span class="skill-name">CSS3</span>
-          <div class="stars">
-            <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span><span>★</span>
-          </div>
-        </li>
-        <li>
-          <span class="skill-name">JavaScript</span>
-          <div class="stars">
-            <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span><span>★</span>
-          </div>
-        </li>
-        <li>
-          <span class="skill-name">Bootstrap</span>
-          <div class="stars">
-            <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span><span>★</span>
-          </div>
-        </li>
-        <li>
-          <span class="skill-name">Responsive Design</span>
-          <div class="stars">
-            <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
-          </div>
-        </li>
-        <li>
-          <span class="skill-name">Git &amp; GitHub</span>
-          <div class="stars">
-            <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span><span>★</span>
-          </div>
-        </li>
-        <li>
-          <span class="skill-name">Communication</span>
-          <div class="stars">
-            <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span>★</span>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- CTA Banner -->
-  <section class="cta-section">
-    <div class="container">
-      <h2>Let's work together!</h2>
-      <p>If you have an exciting project or opportunity, I'd love to hear from you.</p>
-      <a href="contact.html" class="btn">Get in Touch</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>© 2025 Samson&nbsp;Eniolorunda. All rights reserved.</p>
-      <div class="footer-links">
-        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/Samson-Eniolorunda" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://x.com/s_eniolorunda_" target="_blank" rel="noopener">X</a>
+  <!-- Shared footer: copyright + social links -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year">2025</span> Samson Eniolorunda. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/Samson-Eniolorunda" target="_blank"><i class="fa-brands fa-github"></i></a>
+        <a href="https://x.com/s_eniolorunda_" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
       </div>
     </div>
   </footer>
 
+  <!-- Site-wide JavaScript (theme, menu, typing, filtering, scroll buttons, year) -->
   <script src="assets/js/script.js"></script>
 </body>
 </html>
