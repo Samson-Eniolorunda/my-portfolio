@@ -114,51 +114,40 @@ function initYear() {
   }
 }
 
-/* --- 3. THEME TOGGLE (Auto-Detect System Theme) --- */
+/* --- 3. THEME TOGGLE (System Sync) --- */
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
   const body = document.body;
   
-  // 1. Get saved preference
-  const savedTheme = localStorage.getItem('theme');
-  
-  // 2. Check system preference
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // Create the media query watcher
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
-  // LOGIC: Use saved theme if it exists; otherwise use system preference
-  if (savedTheme === 'dark') {
-    body.classList.add('dark-theme');
-    updateIcon(true);
-  } else if (savedTheme === 'light') {
-    body.classList.remove('dark-theme');
-    updateIcon(false);
-  } else if (systemPrefersDark) {
-    // No saved preference, but system is Dark
-    body.classList.add('dark-theme');
-    updateIcon(true);
-  } else {
-    // Default to Light
-    updateIcon(false);
+  // Helper: Update Body Class & Button Icon
+  function applyTheme(isDark) {
+    if (isDark) {
+      body.classList.add('dark-theme');
+      if (toggleBtn) toggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    } else {
+      body.classList.remove('dark-theme');
+      if (toggleBtn) toggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+    }
   }
 
-  // Click Event Listener
+  // 1. Initial Load: Always match System Setting
+  applyTheme(mediaQuery.matches);
+
+  // 2. Live Listener: Instantly adapt if user changes Device Settings
+  mediaQuery.addEventListener('change', (e) => {
+    applyTheme(e.matches);
+  });
+
+  // 3. Manual Toggle: Temporary override (resets on refresh)
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-      body.classList.toggle('dark-theme');
-      const isDark = body.classList.contains('dark-theme');
-      
-      // Save manual choice to override system next time
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      updateIcon(isDark);
+      // Check current state by looking at the class
+      const isCurrentlyDark = body.classList.contains('dark-theme');
+      applyTheme(!isCurrentlyDark); // Flip it
     });
-  }
-
-  // Icon Helper Function
-  function updateIcon(isDark) {
-    if (!toggleBtn) return;
-    toggleBtn.innerHTML = isDark 
-      ? '<i class="fa-solid fa-sun"></i>' 
-      : '<i class="fa-solid fa-moon"></i>';
   }
 }
 
