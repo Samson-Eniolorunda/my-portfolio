@@ -114,7 +114,7 @@ function initYear() {
   }
 }
 
-/* --- 3. THEME TOGGLE (Session Persistence + System Auto-Detect) --- */
+/* --- 3. THEME TOGGLE (Session Persistence + Priority to Live Changes) --- */
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
   const body = document.body;
@@ -131,35 +131,38 @@ function initTheme() {
     }
   }
 
-  // 1. Check Session Storage first (Maintains choice across pages)
+  // 1. Initial Load: Check Session Storage, otherwise use System
   const sessionPreference = sessionStorage.getItem('theme');
-
   if (sessionPreference === 'dark') {
     applyTheme(true);
   } else if (sessionPreference === 'light') {
     applyTheme(false);
   } else {
-    // No session preference? Default to System Settings
     applyTheme(mediaQuery.matches);
   }
 
-  // 2. Listen for System Changes
-  // Only auto-update if the user hasn't manually overridden the session
+  // 2. Listen for System Changes (The "Override" Logic)
+  // This triggers when you change your phone settings.
+  // It overrides any previous manual toggle to sync with the device.
   mediaQuery.addEventListener('change', (e) => {
-    if (!sessionStorage.getItem('theme')) {
-      applyTheme(e.matches);
-    }
+    const newSystemThemeIsDark = e.matches;
+    
+    // Apply the new system theme immediately
+    applyTheme(newSystemThemeIsDark);
+    
+    // Sync the session storage so it remembers this new state on reload
+    sessionStorage.setItem('theme', newSystemThemeIsDark ? 'dark' : 'light');
   });
 
-  // 3. Manual Toggle
+  // 3. Manual Toggle Button
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       const isDarkNow = body.classList.contains('dark-theme');
-      const newMode = !isDarkNow; // Flip current state
+      const newMode = !isDarkNow; // Flip it
       
       applyTheme(newMode);
       
-      // Save to Session Storage (Locks choice until browser closes)
+      // Save manual choice to session
       sessionStorage.setItem('theme', newMode ? 'dark' : 'light');
     });
   }
