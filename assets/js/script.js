@@ -10,8 +10,9 @@
 
   FEATURES (INIT ORDER ON DOMContentLoaded):
   1) Theme Toggle:
-     - Toggles body.dark-theme and saves preference in localStorage.
-     - Updates the toggle button icon (moon/sun).
+    - Switches the website between Light and Dark modes by toggling the dark-theme class on the <body>.
+    - Persists the user's choice in localStorage so the theme remains consistent on future visits.
+    - Dynamically swaps the button icon between a Moon (for Dark Mode) and a Sun (for Light Mode).
   2) Mobile Menu:
      - Opens/closes the nav drawer on small screens.
      - Auto-closes when a nav link is clicked.
@@ -113,28 +114,48 @@ function initYear() {
   }
 }
 
-/* --- 3. THEME TOGGLE --- */
-// Theme toggle: reads/saves preference in localStorage and toggles body.dark-theme.
+/* --- 3. THEME TOGGLE (Auto-Detect System Theme) --- */
 function initTheme() {
   const toggleBtn = document.getElementById('themeToggle');
   const body = document.body;
-  const savedTheme = localStorage.getItem('theme'); // Read saved theme preference (if any)
+  
+  // 1. Get saved preference
+  const savedTheme = localStorage.getItem('theme');
+  
+  // 2. Check system preference
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
+  // LOGIC: Use saved theme if it exists; otherwise use system preference
   if (savedTheme === 'dark') {
-    body.classList.add('dark-theme'); // Enable dark theme styles
+    body.classList.add('dark-theme');
     updateIcon(true);
+  } else if (savedTheme === 'light') {
+    body.classList.remove('dark-theme');
+    updateIcon(false);
+  } else if (systemPrefersDark) {
+    // No saved preference, but system is Dark
+    body.classList.add('dark-theme');
+    updateIcon(true);
+  } else {
+    // Default to Light
+    updateIcon(false);
   }
 
+  // Click Event Listener
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
       body.classList.toggle('dark-theme');
       const isDark = body.classList.contains('dark-theme');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light'); // Persist theme preference
+      
+      // Save manual choice to override system next time
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
       updateIcon(isDark);
     });
   }
 
+  // Icon Helper Function
   function updateIcon(isDark) {
+    if (!toggleBtn) return;
     toggleBtn.innerHTML = isDark 
       ? '<i class="fa-solid fa-sun"></i>' 
       : '<i class="fa-solid fa-moon"></i>';

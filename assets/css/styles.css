@@ -215,7 +215,7 @@ h1, h2, h3 {
 
 .theme-btn, .menu-toggle {
   background: transparent; 
-  border: 2px solid var(--border-color);
+  border: var(--border-color);
   border-radius: 50%; 
   width: 44px; 
   height: 44px;
@@ -523,12 +523,36 @@ h1, h2, h3 {
   font-weight: 800;
 }
 
+
 .project-body p { 
   flex: 1;
   font-size: 0.95rem; 
   margin-bottom: 1rem; 
   color: var(--text-muted);
 }
+
+.upcoming-project-body { 
+  padding: 1rem; 
+  flex-grow: 1; 
+  display: flex; 
+  flex-direction: column; 
+  text-align: left; 
+}
+
+.upcoming-project-body h3 { 
+  font-size: 1.1rem; 
+  margin-bottom: 0.5rem; 
+  color: var(--card-title); 
+  font-weight: 800;
+}
+
+.upcoming-project-body p { 
+  flex: 1;
+  font-size: 0.95rem; 
+  margin-bottom: 1rem; 
+  color: var(--text-muted);
+}
+
 
 /* Tech badge container (wraps on small screens). */
 .badges { 
@@ -594,6 +618,45 @@ h1, h2, h3 {
   background: transparent;
   color: var(--text-main);
  }
+
+.card-btn.code:hover { 
+  background: var(--text-main);
+  color: var(--accent);
+  filter: brightness(1.1); 
+  box-shadow: var(--shadow-md); 
+}
+
+.appcard-btn { 
+  flex: 1; 
+  text-align: center; 
+  padding: 0.75rem; 
+  border-radius: 10px; 
+  font-weight: 700; 
+  border-color: var(--border-color);
+  transition: 0.3s; 
+  font-size: 0.7rem;
+  color: var(--btn-text); 
+  box-shadow: var(--shadow-sm);
+}
+
+.appcard-btn.demo { 
+  background: var(--btn-demo-bg); 
+  color: var(--text-main);
+  border: 2px solid;
+ }
+
+.appcard-btn.demo:hover { 
+  background: transparent;
+  color: var(--accent);
+  filter: brightness(1.1); 
+  box-shadow: var(--shadow-md); 
+}
+
+.appcard-btn.code { 
+  border: 2px solid;
+  background: transparent;
+  color: var(--text-main);
+}
 
 .card-btn.code:hover { 
   background: var(--text-main);
@@ -693,6 +756,10 @@ body.dark-theme .social-card .fa-x-twitter {
   font-family: var(--font-sans); 
   font-weight: 600;
   transition: all 0.3s ease;
+}
+
+ .form-group textarea{
+  height: 100px;
 }
 
 .form-group input:hover, .form-group textarea:hover { 
@@ -808,7 +875,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .about-text p { 
   font-weight: 600; 
-  color: var(--text-main); 
+  color: var(--text-muted); 
   line-height: 1.8; 
 }
 
@@ -977,17 +1044,17 @@ body.dark-theme .devicon-nextjs-plain.colored {
   }
 
   .social-card {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 65px;
     border-radius: 10px;
   }
 
   .social-card span {
-    font-size: 0.6rem;
+    font-size: 0.7rem;
   }
 
   .social-card i{
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 
   .footer-inner { 
@@ -1031,7 +1098,7 @@ body.dark-theme .devicon-nextjs-plain.colored {
   }
 
   .about-text p { 
-    font-size: 1rem; 
+    font-size: 0.8rem; 
   }
 
   .btn-group {     
@@ -1043,7 +1110,7 @@ body.dark-theme .devicon-nextjs-plain.colored {
 
   .btn { 
     font-weight: 800;
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .section-title {
