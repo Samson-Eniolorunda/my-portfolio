@@ -494,7 +494,7 @@ h3 {
   display: grid;
   gap: 1.5rem;
   padding-bottom: 4rem;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 340px));
+  grid-template-columns: repeat(auto-fit, minmax(min(340px,100%), 340px));
   justify-content: center;
   align-content: start;
 }
