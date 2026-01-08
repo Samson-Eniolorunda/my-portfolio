@@ -22,7 +22,7 @@
      - Filters .project-card elements by data-category using .filter-btn buttons.
      - Shows/hides #noProjects when nothing matches.
   5) Contact Form (Contact page only):
-     - Demo handler: prevents submit, shows alert, resets the form.
+     - Active handler: sends message to /api/form (server forwards to Formspree) + shows status.
   6) Directional Scroll Buttons:
      - Shows Up button when scrolling up (not near top)
      - Shows Down button when scrolling down (not near bottom)
@@ -238,15 +238,78 @@ function initPortfolio() {
   });
 }
 
-/* --- 7. CONTACT FORM (Demo) --- */
-// Contact form handler: demo-only submit (prevents reload and resets the form).
+/* --- 7. CONTACT FORM --- */
+// Contact form handler: sends message to POST /api/form (server forwards to Formspree).
 function initContact() {
   const form = document.getElementById('contactForm');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault(); // Stop default browser form submit / page jump
-      alert('Message sent successfully! (This is a demo)');
-      form.reset();
-    });
+  if (!form) return;
+
+  const statusEl = document.getElementById('contactStatus');
+  const submitBtn = document.getElementById('contactSubmitBtn');
+
+  // Helper: status message
+  function setStatus(message, ok = true) {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.style.color = ok ? 'var(--text)' : 'crimson';
   }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop default browser form submit / page jump
+    setStatus('');
+
+    // Honeypot anti-spam: if filled, silently succeed
+    const honeypot = form.querySelector('[name="company"]')?.value || '';
+    if (honeypot.trim()) {
+      form.reset();
+      setStatus('Message sent successfully!', true);
+      return;
+    }
+
+    // Disable button while sending
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+    }
+    setStatus('Sending...', true);
+
+    // Collect fields (requires name="" attributes in HTML)
+    const payload = {
+      name: form.querySelector('[name="name"]')?.value.trim() || '',
+      email: form.querySelector('[name="email"]')?.value.trim() || '',
+      message: form.querySelector('[name="message"]')?.value.trim() || '',
+      source: 'Portfolio Contact Page',
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      const r = await fetch('/api/form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const text = await r.text(); // Keep raw for debugging
+      if (!r.ok) {
+        console.error('Form submit failed:', r.status, text);
+        setStatus('Failed to send. Please try again.', false);
+        return;
+      }
+
+      form.reset();
+      setStatus("✅ Message sent successfully! I'll get back to you soon.", true);
+    } catch (err) {
+      console.error('Form submit error:', err);
+      setStatus('Network error. Please try again.', false);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+      }
+    }
+  });
 }
+
