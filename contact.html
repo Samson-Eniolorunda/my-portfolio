@@ -7,146 +7,214 @@
   - Shared site header/nav + floating scroll buttons
   - Social link cards (Email, LinkedIn, GitHub, X)
   - Contact form UI (id="contactForm") with Name/Email/Message fields
-    NOTE: Form submission is active and handled in script.js (POSTs to /api/form and shows status)
+    NOTE: Form submission is active and handled in script.js (POSTs to /api/form and shows status/modal)
+  - Contact status text (target: #contactStatus) for accessibility
+  - Modal feedback UI (target: #contactModal) for success/error results
   - Shared footer with social links + auto-updated year
 
   DEPENDENCIES:
-  - assets/css/styles.css  (contact layout, social cards, form styling, themes)
+  - assets/css/styles.css  (contact layout, social cards, form styling, modal styling, themes)
   - assets/js/script.js    (active form handler via initContact(), theme/menu/scroll/year)
   - CDN: Google Fonts + Font Awesome
 ============================================================================= -->
 <html lang="en">
 <head>
+  <!-- =========================
+    HEAD: DOCUMENT METADATA
+  ========================== -->
+
+  <!-- Basic metadata -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <!-- SEO metadata -->
-  <meta name="description" content="Get in touch with Samson Eniolorunda via email, GitHub, LinkedIn or X. Send a message directly using the contact form." />
+  <meta
+    name="description"
+    content="Get in touch with Samson Eniolorunda via email, GitHub, LinkedIn or X. Send a message directly using the contact form."
+  />
   <meta name="author" content="Samson Eniolorunda" />
   <meta name="keywords" content="contact Samson Eniolorunda, frontend developer contact" />
   <meta name="robots" content="index, follow" />
 
-  <!-- Contact page -->
+  <!-- Title -->
   <title>Contact | Samson Eniolorunda</title>
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-  <!-- Typography: Google Fonts (Inter + Space Grotesk) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
-  <!-- Icons: Font Awesome (used for UI icons + social icons) -->
+
+  <!-- =========================
+    HEAD: STYLES + ICONS
+  ========================== -->
+
+  <!-- Typography -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <!-- Main stylesheet: global layout, components, and themes -->
+
+  <!-- Styles -->
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
-<body>
 
-  <!-- Floating scroll controls (wired to script.js: #btnPageUp / #btnPageDown) -->
+<body>
+  <!-- =========================
+    UI: FLOATING SCROLL CONTROLS
+  ========================== -->
   <div id="scrollNav" class="scroll-nav">
-    <button id="btnPageUp" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
-    <button id="btnPageDown" class="scroll-btn"><i class="fa-solid fa-chevron-down"></i></button>
+    <button id="btnPageUp" class="scroll-btn" aria-label="Scroll Up"><i class="fa-solid fa-chevron-up"></i></button>
+    <button id="btnPageDown" class="scroll-btn" aria-label="Scroll Down"><i class="fa-solid fa-chevron-down"></i></button>
   </div>
 
-  <!-- Site header: logo + primary navigation + action buttons -->
+  <!-- =========================
+    HEADER: SITE NAVIGATION
+  ========================== -->
   <header class="site-header">
     <div class="container nav-inner">
-      <!-- Brand / logo (links back to Home) -->
       <div class="logo">
         <a href="index.html">Samson Eniolorunda</a>
       </div>
-      <!-- Primary nav links (mobile menu toggles this list) -->
+
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="portfolio.html">Portfolio</a></li>
         <li><a href="contact.html" class="active">Contact</a></li>
       </ul>
-      <!-- Header actions: theme toggle + mobile menu button -->
+
       <div class="nav-actions">
-        <!-- Theme toggle button (adds/removes body.dark-theme; saved to localStorage) -->
-        <button id="themeToggle" class="theme-btn"><i class="fa-solid fa-moon"></i></button>
-        <!-- Mobile menu toggle (shows/hides .nav-links on small screens) -->
-        <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
   </header>
 
-  <!-- Main page content -->
-  <!-- Contact page content: social links + contact form -->
-  <main class="container" style="padding-top: 3rem; padding-bottom: 3rem;">
-    <!-- Constrains width and centers contact content -->
+  <!-- =========================
+    MAIN: PAGE CONTENT
+  ========================== -->
+  <main class="container page-section">
     <div class="contact-wrapper">
-        <h1 class="section-title">Get In Touch</h1>
-        <h2 class="section-subtitle">
-          If you have an exciting project or opportunity, I'd love to hear from you.
-        </h2>
+      <!-- Page title -->
+      <h1 class="section-title">Get In Touch</h1>
+      <p class="section-subtitle">
+        If you have an exciting project or opportunity, I'd love to hear from you.
+      </p>
 
-      <!-- Social link cards (quick contact options) -->
+      <!-- =========================
+        GROUP: SOCIAL LINKS
+      ========================== -->
       <div class="social-grid">
-        <!-- Individual social/contact card -->
-        <a href="mailto:samsoneniolorunda@gmail.com" class="social-card">
+        <a href="mailto:samsoneniolorunda@gmail.com" class="social-card" aria-label="Email">
           <i class="fa-solid fa-envelope"></i>
           <span>Email</span>
         </a>
-        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" class="social-card">
+
+        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" class="social-card" aria-label="LinkedIn">
           <i class="fa-brands fa-linkedin-in"></i>
           <span>LinkedIn</span>
         </a>
-        <a href="https://github.com/Samson-Eniolorunda" target="_blank" class="social-card">
+
+        <a href="https://github.com/Samson-Eniolorunda" target="_blank" class="social-card" aria-label="GitHub">
           <i class="fa-brands fa-github"></i>
           <span>GitHub</span>
         </a>
-        <a href="https://x.com/s_eniolorunda_" target="_blank" class="social-card">
+
+        <a href="https://x.com/s_eniolorunda_" target="_blank" class="social-card" aria-label="X">
           <i class="fa-brands fa-x-twitter"></i>
           <span>X</span>
         </a>
       </div>
 
-      <!-- Contact form (active submit handler in script.js -> POST /api/form) -->
+      <!-- =========================
+        GROUP: CONTACT FORM
+        - Wired in script.js: initContact()
+      ========================== -->
       <form class="contact-form" id="contactForm">
-        <h2 style="margin-bottom: 1.5rem;">Send a Message</h2>
+        <h2 class="contact-form-title">Send a Message</h2>
 
-        <!-- Honeypot (anti-spam): bots may fill this hidden field -->
-        <input type="text" name="company" id="company" autocomplete="off" tabindex="-1" aria-hidden="true"
-          style="position:absolute; left:-9999px; opacity:0; height:0; width:0;" />
+        <!-- Honeypot field (anti-spam): hidden by CSS via .hp-field -->
+        <input
+          class="hp-field"
+          type="text"
+          name="company"
+          id="company"
+          autocomplete="off"
+          tabindex="-1"
+          aria-hidden="true"
+        />
 
-        <!-- Form field group: label + input/textarea -->
+        <!-- Name -->
         <div class="form-group">
           <label for="name">Name</label>
-          <!-- ADDED: name="name" -->
           <input type="text" id="name" name="name" placeholder="Your Full Name" required />
         </div>
+
+        <!-- Email -->
         <div class="form-group">
           <label for="email">Email</label>
-          <!-- ADDED: name="email" -->
           <input type="email" id="email" name="email" placeholder="your@email.com" required />
         </div>
+
+        <!-- Message -->
         <div class="form-group">
           <label for="message">Message</label>
-          <!-- ADDED: name="message" -->
           <textarea id="message" name="message" placeholder="How can I help you?" required></textarea>
         </div>
 
-        <!-- ADDED: status text area -->
-        <p id="contactStatus" style="margin: 0.75rem 0 0; font-size: 0.95rem;"></p>
+        <!-- Accessible status text (secondary UX, modal is primary UX) -->
+        <p id="contactStatus" class="contact-status" aria-live="polite"></p>
 
-        <!-- Submit button -->
-        <!-- ADDED: id="contactSubmitBtn" -->
-        <button id="contactSubmitBtn" type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+        <!-- Submit -->
+        <button id="contactSubmitBtn" type="submit" class="btn btn-primary btn-block">
+          Send Message
+        </button>
       </form>
     </div>
   </main>
 
-  <!-- Shared footer: copyright + social links -->
+  <!-- =========================
+    FOOTER: SITE FOOTER
+  ========================== -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© <span id="year">2025</span> Samson Eniolorunda. All rights reserved.</p>
       <div class="footer-social">
-        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="https://github.com/Samson-Eniolorunda" target="_blank"><i class="fa-brands fa-github"></i></a>
-        <a href="https://x.com/s_eniolorunda_" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/Samson-Eniolorunda" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://x.com/s_eniolorunda_" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
       </div>
     </div>
   </footer>
 
-  <!-- Site-wide JavaScript (theme, menu, typing, filtering, scroll buttons, year) -->
+  <!-- =========================
+    UI: CONTACT MODAL (used by script.js)
+    - Opens on success/error
+    - Closes via button, backdrop click, or ESC key
+  ========================== -->
+  <div id="contactModal" class="modal" aria-hidden="true">
+    <!-- Backdrop -->
+    <div class="modal-backdrop" data-modal-close></div>
+
+    <!-- Dialog -->
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+      <div id="contactModalIcon" class="modal-icon">
+        <!-- Icon injected by JS -->
+      </div>
+
+      <h3 id="contactModalTitle" class="modal-title">Status</h3>
+      <p id="contactModalMsg" class="modal-message">Message</p>
+
+      <button class="btn btn-primary modal-close-btn" type="button" data-modal-close>
+        Close
+      </button>
+    </div>
+  </div>
+
+  <!-- =========================
+    SCRIPTS: SITE-WIDE JAVASCRIPT
+  ========================== -->
   <script src="assets/js/script.js"></script>
 </body>
 </html>

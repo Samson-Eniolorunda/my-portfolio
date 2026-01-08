@@ -17,89 +17,111 @@
 ============================================================================= -->
 <html lang="en">
 <head>
+  <!-- =========================
+    HEAD: DOCUMENT METADATA
+  ========================== -->
+
+  <!-- Basic metadata -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <!-- SEO metadata -->
-  <meta name="description" content="Browse the projects of Samson Eniolorunda – including responsive client portfolios and a real‑time digital clock app." />
+  <meta
+    name="description"
+    content="Browse the projects of Samson Eniolorunda – including responsive client portfolios and a real-time digital clock app."
+  />
   <meta name="author" content="Samson Eniolorunda" />
   <meta name="keywords" content="Samson Eniolorunda portfolio, web projects, digital clock" />
   <meta name="robots" content="index, follow" />
 
-  <!-- Portfolio page -->
+  <!-- Title -->
   <title>Portfolio | Samson Eniolorunda</title>
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
-  <!-- Typography: Google Fonts (Inter + Space Grotesk) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
-  <!-- Icons: Font Awesome (used for UI icons + social icons) -->
+
+  <!-- =========================
+    HEAD: STYLES + ICONS
+  ========================== -->
+
+  <!-- Typography -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-  <!-- Tech icons: Devicon (used in Tech Stack + project badges) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
-  <!-- Main stylesheet: global layout, components, and themes -->
+
+  <!-- Styles -->
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
+
 <body>
-
-  <!-- Floating scroll controls (wired to script.js: #btnPageUp / #btnPageDown) -->
-  <div id="scrollNav" class="scroll-nav">
-    <button id="btnPageUp" class="scroll-btn"><i class="fa-solid fa-chevron-up"></i></button>
-    <button id="btnPageDown" class="scroll-btn"><i class="fa-solid fa-chevron-down"></i></button>
-  </div>
-
-  <!-- Site header: logo + primary navigation + action buttons -->
+  <!-- =========================
+    HEADER: SITE NAVIGATION
+  ========================== -->
   <header class="site-header">
     <div class="container nav-inner">
-      <!-- Brand / logo (links back to Home) -->
+      <!-- Brand / logo -->
       <div class="logo">
         <a href="index.html">Samson Eniolorunda</a>
       </div>
-      <!-- Primary nav links (mobile menu toggles this list) -->
+
+      <!-- Primary navigation links -->
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="portfolio.html" class="active">Portfolio</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
-      <!-- Header actions: theme toggle + mobile menu button -->
+
+      <!-- Header actions (theme toggle + mobile menu) -->
       <div class="nav-actions">
-        <!-- Theme toggle button (adds/removes body.dark-theme; saved to localStorage) -->
-        <button id="themeToggle" class="theme-btn"><i class="fa-solid fa-moon"></i></button>
-        <!-- Mobile menu toggle (shows/hides .nav-links on small screens) -->
-        <button class="menu-toggle"><i class="fa-solid fa-bars"></i></button>
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
   </header>
 
-  <!-- Main page content -->
-  <!-- Portfolio page: filterable project cards -->
-  <main class="container" style="padding-top: 3rem;">
+  <!-- =========================
+    MAIN: PAGE CONTENT
+  ========================== -->
+  <main class="container page-section">
+    <!-- Page title -->
     <h1 class="section-title">My Projects</h1>
-    <h2 class="section-subtitle">Projects demonstrating my skills and dedication to clean, responsive design.</h2>
+    <p class="section-subtitle">Projects demonstrating my skills and dedication to clean, responsive design.</p>
 
-    <!-- Filter controls (script.js reads data-filter to show/hide cards) -->
+    <!-- =========================
+      GROUP: FILTER CONTROLS
+      - Wired in script.js: initPortfolio()
+    ========================== -->
     <div class="filter-container">
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="web">Web</button>
       <button class="filter-btn" data-filter="app">Apps</button>
     </div>
 
-    <!-- Projects grid (cards have data-category="web|app" for filtering) -->
+    <!-- =========================
+      GROUP: PROJECT GRID
+    ========================== -->
     <div class="portfolio-grid" id="portfolioGrid">
-      
-      <!-- Project card: image + description + tech badges + links -->
+      <!-- Project 1 -->
       <div class="project-card" data-category="web">
-        <!-- Project preview image (stored in assets/img/) -->
         <img src="assets/img/Lateef_Kazeem_site_screenshot.png" alt="Lateef Kazeem Portfolio" class="project-img" />
         <div class="project-body">
           <h3>Client Portfolio Site</h3>
           <p>A responsive personal website showcasing biography and career stats for a local footballer.</p>
-          <!-- Tech badges (icons from Devicon) -->
+
+          <!-- Tech badges -->
           <div class="badges">
             <span class="badge"><i class="devicon-html5-plain colored"></i> HTML</span>
             <span class="badge"><i class="devicon-css3-plain colored"></i> CSS</span>
             <span class="badge"><i class="devicon-javascript-plain colored"></i> JS</span>
           </div>
-          <!-- Action buttons: Live demo + source code -->
+
+          <!-- Card actions -->
           <div class="card-actions">
             <a href="https://lateefkazeempro.vercel.app/" target="_blank" class="card-btn demo">Live Demo</a>
             <a href="https://github.com/Samson-Eniolorunda/lateef-kazeem-portfolio" target="_blank" class="card-btn code">GitHub</a>
@@ -107,16 +129,21 @@
         </div>
       </div>
 
+      <!-- Project 2 -->
       <div class="project-card" data-category="web">
         <img src="assets/img/real_time_digital_clock_screenshot.png" alt="Digital Clock" class="project-img" />
         <div class="project-body">
           <h3>Real-Time Digital Clock</h3>
           <p>A lightweight web app displaying the current time with a clean, modern interface.</p>
+
+          <!-- Tech badges -->
           <div class="badges">
             <span class="badge"><i class="devicon-html5-plain colored"></i> HTML</span>
             <span class="badge"><i class="devicon-css3-plain colored"></i> CSS</span>
             <span class="badge"><i class="devicon-javascript-plain colored"></i> JS</span>
           </div>
+
+          <!-- Card actions -->
           <div class="card-actions">
             <a href="https://realtimedigitalclock.vercel.app/" target="_blank" class="card-btn demo">Live Demo</a>
             <a href="https://github.com/Samson-Eniolorunda/real-time-digital-clock" target="_blank" class="card-btn code">GitHub</a>
@@ -124,15 +151,20 @@
         </div>
       </div>
 
+      <!-- Project 3 -->
       <div class="project-card" data-category="web">
         <img src="assets/img/social_links_screenshot.png" alt="Social Links" class="project-img" />
         <div class="project-body">
           <h3>Social Links Profile</h3>
           <p>A centralized link-in-bio page built for speed and visual clarity.</p>
+
+          <!-- Tech badges -->
           <div class="badges">
             <span class="badge"><i class="devicon-html5-plain colored"></i> HTML</span>
             <span class="badge"><i class="devicon-css3-plain colored"></i> CSS</span>
           </div>
+
+          <!-- Card actions -->
           <div class="card-actions">
             <a href="https://samson-dev-links.vercel.app/" target="_blank" class="card-btn demo">Live Demo</a>
             <a href="https://github.com/Samson-Eniolorunda/social-links-profile" target="_blank" class="card-btn code">GitHub</a>
@@ -140,55 +172,81 @@
         </div>
       </div>
 
+      <!-- Project 4 -->
       <div class="project-card" data-category="web">
         <img src="assets/img/documorph_screenshot.png" alt="DocuMorph" class="project-img" />
         <div class="project-body">
           <h3>DocuMorph</h3>
           <p>A universal UI shell file tool for conversion/compression/resizing/merging.</p>
+
+          <!-- Tech badges -->
           <div class="badges">
             <span class="badge"><i class="devicon-html5-plain colored"></i> HTML</span>
             <span class="badge"><i class="devicon-css3-plain colored"></i> CSS</span>
             <span class="badge"><i class="devicon-javascript-plain colored"></i> JS</span>
           </div>
+
+          <!-- Card actions -->
           <div class="card-actions">
             <a href="https://docu-morph.vercel.app/" target="_blank" class="card-btn demo">Live Demo</a>
             <a href="https://github.com/Samson-Eniolorunda/DocuMorph" target="_blank" class="card-btn code">GitHub</a>
           </div>
         </div>
       </div>
-      
-      <!-- Future project placeholder for App category -->
+
+      <!-- App placeholder -->
       <div class="project-card" data-category="app">
-        <img src="assets/img/coming_soon.jpg" alt="coming soon" class="project-img">
-          <div class="upcoming-project-body">
-            <h3>New App Launching Soon</h3>
-            <p>This space is reserved for a future mobile or desktop app project. Stay tuned for updates!</p>
-            <div class="badges">
-              <span class="badge">App</span>
-            </div>
-            <div class="card-actions">
-              <a href="#" target="_blank" class="appcard-btn demo" onclick="return false;">Coming Soon</a>
-              <a href="#" target="_blank" class="appcard-btn code" onclick="return false;">TBD</a>
-            </div>
+        <img src="assets/img/coming_soon.jpg" alt="Coming soon" class="project-img" />
+        <div class="project-body">
+          <h3>New App Launching Soon</h3>
+          <p>This space is reserved for a future mobile or desktop app project. Stay tuned for updates!</p>
+
+          <!-- Tech badges -->
+          <div class="badges">
+            <span class="badge">App</span>
+          </div>
+
+          <!-- Card actions -->
+          <div class="card-actions">
+            <a href="#" class="card-btn demo is-disabled" onclick="return false;">Coming Soon</a>
+            <a href="#" class="card-btn code is-disabled" onclick="return false;">TBD</a>
           </div>
         </div>
       </div>
-      <div class="no-projects" id="noProjects" style="display: none;">App projects coming soon.</div>
     </div>
+
+    <!-- =========================
+      UI: NO PROJECTS FALLBACK
+      - Shown by script.js when filter returns 0 cards
+    ========================== -->
+    <div class="no-projects" id="noProjects">App projects coming soon.</div>
   </main>
 
-  <!-- Shared footer: copyright + social links -->
+  <!-- =========================
+    UI: FLOATING SCROLL CONTROLS
+  ========================== -->
+  <div id="scrollNav" class="scroll-nav">
+    <button id="btnPageUp" class="scroll-btn" aria-label="Scroll Up"><i class="fa-solid fa-chevron-up"></i></button>
+    <button id="btnPageDown" class="scroll-btn" aria-label="Scroll Down"><i class="fa-solid fa-chevron-down"></i></button>
+  </div>
+
+  <!-- =========================
+    FOOTER: SITE FOOTER
+  ========================== -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>© <span id="year">2025</span> Samson Eniolorunda. All rights reserved.</p>
       <div class="footer-social">
-        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="https://github.com/Samson-Eniolorunda" target="_blank"><i class="fa-brands fa-github"></i></a>
-        <a href="https://x.com/s_eniolorunda_" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://github.com/Samson-Eniolorunda" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://x.com/s_eniolorunda_" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
       </div>
     </div>
   </footer>
-  <!-- Site-wide JavaScript (theme, menu, typing, filtering, scroll buttons, year) -->
+
+  <!-- =========================
+    SCRIPTS: SITE-WIDE JAVASCRIPT
+  ========================== -->
   <script src="assets/js/script.js"></script>
 </body>
 </html>

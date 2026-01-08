@@ -14,12 +14,7 @@
 function resolveFormspreeEndpoint(raw) {
   const v = String(raw || "").trim();
   if (!v) return "";
-
-  // If they stored only the id (e.g. mwpgzz1l), build full endpoint
-  if (!v.startsWith("http")) {
-    return `https://formspree.io/f/${v}`;
-  }
-
+  if (!v.startsWith("http")) return `https://formspree.io/f/${v}`;
   return v;
 }
 
@@ -30,7 +25,7 @@ async function readJson(req) {
 }
 
 module.exports = async (req, res) => {
-  // Basic CORS (safe on same-origin; useful if you ever test from elsewhere)
+  // Basic CORS (safe on same-origin; useful for testing)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
@@ -49,14 +44,14 @@ module.exports = async (req, res) => {
   const endpoint = resolveFormspreeEndpoint(process.env.PORTFOLIO_FORMSPREE_ENDPOINT);
   if (!endpoint) {
     res.statusCode = 500;
-    res.setHeader("Content-Type", "text/plain");
-    return res.end("Missing PORTFOLIO_FORMSPREE_ENDPOINT");
+    res.setHeader("Content-Type", "application/json");
+    return res.end(JSON.stringify({ ok: false, error: "Missing PORTFOLIO_FORMSPREE_ENDPOINT" }));
   }
 
   try {
     const data = await readJson(req);
 
-    // Minimal validation (server-side)
+    // Minimal validation
     const name = String(data?.name || "").trim();
     const email = String(data?.email || "").trim();
     const message = String(data?.message || "").trim();
@@ -67,7 +62,6 @@ module.exports = async (req, res) => {
       return res.end(JSON.stringify({ ok: false, error: "Missing required fields" }));
     }
 
-    // Forward to Formspree
     const r = await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -85,11 +79,19 @@ module.exports = async (req, res) => {
     });
 
     const text = await r.text();
+    let out;
+
+    // Try to parse Formspree response as JSON; fallback to raw text
+    try {
+      out = text ? JSON.parse(text) : { ok: r.ok };
+    } catch {
+      out = { ok: r.ok, raw: text || "" };
+    }
 
     res.statusCode = r.status;
     res.setHeader("Content-Type", "application/json");
     res.setHeader("Cache-Control", "no-store");
-    return res.end(text || JSON.stringify({ ok: r.ok }));
+    return res.end(JSON.stringify(out));
   } catch (err) {
     console.error("Form proxy error:", err);
     res.statusCode = 500;

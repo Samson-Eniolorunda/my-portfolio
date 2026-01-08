@@ -2,30 +2,41 @@
   FILE: styles.css
   PROJECT: Samson Eniolorunda Portfolio Website (Light/Dark Theme)
   AUTHOR: Samson Eniolorunda
-  LAST UPDATED: December 19, 2025
+  LAST UPDATED: January 2026
 
   PURPOSE:
-  - Provides all global styling for the website: layout, typography, components, and pages.
+  - Provides all global styling for the website: layout, typography, components, and page sections.
   - Implements a theme system using CSS variables (Light is default, Dark via body.dark-theme).
+  - Styles shared UI patterns used across pages (nav, buttons, cards, portfolio, contact, footer).
+  - Includes a reusable modal system for Contact form feedback (success/error).
 
   HOW IT WORKS (HIGH LEVEL):
-  - Section 1: CSS Variables (colors, spacing, typography) for Light theme + overrides for Dark theme.
-  - Section 2: Resets + global helpers (.container, headings, links, images).
-  - Sections 3–11: Component styles used across pages:
-      Header/Nav, Buttons, Hero, Cards, Lists, Portfolio grid/cards, Contact UI,
-      Scroll buttons, About layout, Footer, Dark-mode icon fixes.
-  - Section 12: Responsive breakpoints for nav/menu, grids, typography, and spacing.
+  1) Theme Tokens:
+     - :root defines Light theme variables.
+     - body.dark-theme overrides for Dark mode.
+  2) Global Resets + Base:
+     - Box sizing, spacing reset, typography, background, container sizing.
+  3) Shared Components:
+     - Header/Nav (desktop + mobile drawer)
+     - Buttons (primary/outline) + helpers (.btn-block)
+     - Sections (titles/subtitles) + spacing helper (.page-section)
+     - Cards, lists, portfolio grid and actions
+     - Contact page: social cards, form, honeypot hiding, status text
+     - Scroll buttons
+     - Footer + social icons
+     - Dark-mode icon tweaks
+  4) Modal System:
+     - Small centered dialog with overlay backdrop, theme-aware, accessible-friendly.
 
   KEY DEPENDENCIES:
-  - body.dark-theme class is toggled by assets/js/script.js (theme button + localStorage).
-  - HTML classes/ids are shared across pages (index/about/portfolio/contact).
+  - body.dark-theme is toggled by assets/js/script.js.
+  - Contact modal uses #contactModal and CSS classes: .modal, .modal-backdrop, .modal-dialog, etc.
 ============================================================================= */
 
 /* ========== 1. ROOT VARIABLES & THEME CONFIGURATION ========== */
-/* Theme tokens (Light mode defaults). Dark mode overrides are under body.dark-theme. */
 :root {
   /* Layout */
-  --container-width: 1200px; 
+  --container-width: 1200px;
   --page-pad: clamp(1.25rem, 5vw, 3rem);
   --header-height: 85px;
 
@@ -35,76 +46,75 @@
 
   /* --- LIGHT THEME (Premium Cream) --- */
   --bg-nav: rgba(255, 255, 255, 0.95);
-  --bg-footer: #FFFFFF;
-  --bg-body: linear-gradient(180deg, #FFFCF5 0%, #FEF3C7 100%);
-  
-  --text-main: #111827;      
-  --text-muted: #4B5563;     
-  --border-color: rgba(0,0,0,0.12);
-  
-  /* UPDATED: Changed from pure white to match theme palette (Glassy Cream) */
-  --surface-card: rgba(255, 255, 255, 0.75); 
-  
+  --bg-footer: #ffffff;
+  --bg-body: linear-gradient(180deg, #fffcf5 0%, #fef3c7 100%);
+
+  --text-main: #111827;
+  --text-muted: #4b5563;
+
+  --border-color: rgba(0, 0, 0, 0.12);
+  --surface-card: rgba(255, 255, 255, 0.75);
+
   /* Accent: Golden Yellow */
-  --accent: #D97706;         
+  --accent: #d97706;
 
   /* Project Card Colors */
-  --card-title: #D97706;     /* Amber-500 */
-  --badge-bg: #0284C7;       /* Sky-600 */
-  --btn-demo-bg: #D97706;    /* Amber-500 */
-  --btn-code-bg: #4F46E5;    /* Indigo-600 */
-  --btn-text: #FFFFFF;
+  --card-title: #d97706;
+  --badge-bg: #0284c7;
+  --btn-demo-bg: #d97706;
+  --btn-code-bg: #4f46e5;
+  --btn-text: #ffffff;
 
   /* Shadows */
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.12);
-  --text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  /* Modal tokens */
+  --modal-backdrop: rgba(0, 0, 0, 0.55);
 }
 
-/* Dark theme overrides: toggled by script.js and persisted via localStorage. */
 body.dark-theme {
   /* --- DARK THEME (Deep Navy) --- */
   --bg-nav: rgba(15, 23, 42, 0.95);
-  --bg-footer: #0F172A;
-  --bg-body: linear-gradient(180deg, #1E293B 0%, #020617 100%);
-  
-  --text-main: #F9FAFB;
-  --text-muted: #D1D5DB;
-  --border-color: rgba(255,255,255,0.15);
-  
-  /* UPDATED: Dark theme card surface */
+  --bg-footer: #0f172a;
+  --bg-body: linear-gradient(180deg, #1e293b 0%, #020617 100%);
+
+  --text-main: #f9fafb;
+  --text-muted: #d1d5db;
+
+  --border-color: rgba(255, 255, 255, 0.15);
   --surface-card: rgba(30, 41, 59, 0.65);
-  
-  /* Accent: Brighter Yellow */
-  --accent: #D97706;         
-  
-  /* Project Card Colors (Dark Mode) */
-  --card-title: #D97706;     
-  --badge-bg: #0EA5E9;       
-  --btn-demo-bg: #D97706;     
-  --btn-code-bg: #6366F1;    
-  --btn-text: #FFFFFF;
+
+  --accent: #d97706;
+
+  --card-title: #d97706;
+  --badge-bg: #0ea5e9;
+  --btn-demo-bg: #d97706;
+  --btn-code-bg: #6366f1;
+  --btn-text: #ffffff;
 
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 20px 40px -5px rgba(0, 0, 0, 0.6);
-  --text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+  --modal-backdrop: rgba(0, 0, 0, 0.65);
 }
 
 /* ========== 2. RESET & GLOBAL STYLES ========== */
-* { 
-  box-sizing: 
-  border-box; 
-  margin: 0; 
-  padding: 0; 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html { 
-  scroll-behavior: smooth; 
+html {
+  scroll-behavior: smooth;
 }
 
-/* Base page setup: typography, colors, full-height layout, and transitions. */
+/* Base page setup */
 body {
   font-family: var(--font-sans);
   color: var(--text-main);
@@ -117,7 +127,7 @@ body {
   transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* Reusable content container: centers content and limits max width. */
+/* Reusable content container */
 .container {
   width: 100%;
   max-width: var(--container-width);
@@ -125,42 +135,48 @@ body {
   padding: 0 var(--page-pad);
 }
 
-a { 
-  text-decoration: none; 
-  color: inherit; 
-  transition: all 0.3s ease; 
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
 }
 
-ul { 
-  list-style: none; 
+ul {
+  list-style: none;
 }
 
-img { 
-  display: block; 
-  max-width: 100%; 
+img {
+  display: block;
+  max-width: 100%;
 }
 
-h1, h2, h3 { 
-  font-family: var(--font-display); 
-  font-weight: 800; 
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
   letter-spacing: -0.025em;
   text-shadow: var(--text-shadow);
 }
 
+/* Utility: page spacing section */
+.page-section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
 /* ========== 3. NAVIGATION ========== */
-/* Sticky site header used on all pages. */
 .site-header {
   background: var(--bg-nav);
   height: var(--header-height);
-  position: sticky; /* keeps the header visible while scrolling */
+  position: sticky;
   top: 0;
   z-index: 100;
   border-bottom: 1px solid var(--border-color);
-  backdrop-filter: blur(12px); /* soft blur for glassy effect (supported browsers) */
+  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sm);
 }
 
-/* Header layout: aligns logo, links, and actions. */
 .nav-inner {
   display: flex;
   justify-content: space-between;
@@ -168,80 +184,81 @@ h1, h2, h3 {
   height: 100%;
 }
 
-.logo a { 
-  font-size: 1.5rem; 
-  font-weight: 600; 
-  color: var(--text-main); 
+.logo a {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-main);
 }
 
-/* Desktop nav links list (becomes a drawer/menu on mobile). */
-.nav-links { 
-  display: flex; 
-  gap: 2.5rem; 
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
 }
 
-.nav-links a { 
-  font-weight: 700; 
-  font-size: 1.05rem; 
-  color: var(--text-muted); 
+.nav-links a {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-muted);
   position: relative;
 }
 
 .nav-links a::after {
-  content: ''; 
-  position: absolute; 
-  left: 0; 
-  bottom: -4px; 
-  width: 0; 
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
   height: 3px;
-  background: var(--accent); 
-  transition: width 0.3s ease; 
+  background: var(--accent);
+  transition: width 0.3s ease;
   border-radius: 2px;
 }
 
-.nav-links a:hover, .nav-links a.active { 
-  color: var(--text-main); 
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--text-main);
 }
 
-.nav-links a:hover::after, .nav-links a.active::after { 
-  width: 100%; 
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  width: 100%;
 }
 
-.nav-actions { 
-  display: flex; 
-  align-items: center; 
-  gap: 1rem; 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.theme-btn, .menu-toggle {
-  background: transparent; 
-  border: var(--border-color);
-  border-radius: 50%; 
-  width: 44px; 
+/* Theme + menu buttons */
+.theme-btn,
+.menu-toggle {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  width: 44px;
   height: 44px;
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   justify-content: center;
-  cursor: pointer; 
-  color: var(--text-main); 
+  cursor: pointer;
+  color: var(--text-main);
   transition: 0.3s;
   font-size: 1.2rem;
 }
 
-.theme-btn:hover { 
-  border-color: var(--accent); 
-  color: var(--accent); 
-  transform: rotate(15deg); 
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(15deg);
   box-shadow: var(--shadow-sm);
 }
 
-/* Hamburger menu button (mobile only). */
-.menu-toggle { 
-  display: none; 
+.menu-toggle {
+  display: none;
 }
 
 /* ========== 4. HERO SECTIONS ========== */
-/* Circular hero/profile image styling (reused on About page). */
 .hero-img-style {
   width: 220px;
   height: 220px;
@@ -252,171 +269,174 @@ h1, h2, h3 {
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.hero-img-style:hover { 
-  transform: scale(1.05); 
-  border-color: var(--accent); 
+.hero-img-style:hover {
+  transform: scale(1.05);
 }
 
-/* Home hero section: intro content + gradient/glow effects. */
-.home-hero { 
-  padding: 5rem 0; 
-  text-align: center; 
+.home-hero {
+  padding: 5rem 0;
+  text-align: center;
 }
 
-.home-hero .hero-img-style { 
-  margin: 0 auto 2.5rem; 
+.home-hero .hero-img-style {
+  margin: 0 auto 2.5rem;
 }
 
-.home-hero h1 { 
-  font-size: clamp(2.4rem, 6vw, 4.5rem); 
-  margin-bottom: 0.75rem; 
+.home-hero h1 {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  margin-bottom: 0.75rem;
   line-height: 1.1;
 }
 
-.lead { 
-  font-size: 1.35rem; 
-  font-weight: 500; 
-  color: var(--text-muted); 
-  margin-bottom: 2.5rem; 
+.lead {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
 }
 
-#typed { 
-  color: var(--accent); 
-  font-weight: 800; 
-  text-decoration: none; 
+#typed {
+  color: var(--accent);
+  font-weight: 800;
 }
 
-/* Base button styles shared across primary/outline buttons. */
-.btn { 
-  display: inline-block; 
-  padding: 1rem 2.2rem; 
-  border-radius: 50px; 
-  font-weight: 800; 
+/* ========== 5. BUTTONS ========== */
+.btn {
+  display: inline-block;
+  padding: 1rem 2.2rem;
+  border-radius: 50px;
+  font-weight: 800;
   font-size: 1.05rem;
-  border-color: var(--border-color);
-  transition: all 0.3s ease; 
+  border: 2px solid var(--border-color);
+  transition: all 0.3s ease;
   cursor: pointer;
   letter-spacing: 0.02em;
 }
 
-.btn-group { 
-  display: flex; 
-  justify-content: center; 
-  gap: 1.5rem; 
-  flex-wrap: wrap; 
-}
-
-/* Primary CTA button. */
-.btn-primary { 
-  background: var(--accent); 
-  border: 2px solid;
-  color: var(--text-main); 
-  box-shadow: var(--shadow-md); 
-}
-
-.btn-primary:hover { 
-  background: var(--bg-nav); 
-  color: var(--accent); 
-  transform: translateY(-4px); 
-  box-shadow: var(--shadow-lg); 
-}
-
-/* Outline button for secondary actions. */
-.btn-outline { 
-  border: 2px solid;
-  color: var(--text-main); 
-  background: transparent; 
-}
-.btn-outline:hover { 
-  background: var(--text-main); 
-  color: var(--accent); 
-  transform: translateY(-4px); 
-  box-shadow: var(--shadow-md); 
-}
-
-/* ========== 5. HEADERS & LISTS ========== */
-
-.section-title {
-  text-align: center; 
-  font-size: clamp(2rem, 5vw, 2.5rem); 
-  margin-bottom: 2rem;
-  position: relative; 
-  display: flex; 
-  flex-direction: row;
+.btn-group {
+  display: flex;
   justify-content: center;
-  align-items: center; 
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--text-main);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent);
+}
+
+.btn-primary:hover {
+  background: var(--bg-nav);
+  color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  background: var(--text-main);
+  color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Helper: full width button */
+.btn-block {
+  width: 100%;
+  display: block;
+}
+
+/* Disabled button (for "Sending...") */
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ========== 6. HEADERS & LISTS ========== */
+.section-title {
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  margin-bottom: 2rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
+}
+
+.section-title i {
+  color: var(--accent);
 }
 
 .section-subtitle {
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
-  position: relative; 
-  display: flex; 
-  flex-direction: row;
+  display: flex;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   margin-bottom: 3.5rem;
+  color: var(--text-muted);
 }
 
 .section-title::after {
-  content: ''; 
-  display: block; 
-  width: 80px; 
+  content: "";
+  width: 80px;
   height: 6px;
-  background: var(--accent); 
-  border-radius: 4px; 
-  margin-top: 0.5rem;
-  position: absolute; 
+  background: var(--accent);
+  border-radius: 4px;
+  position: absolute;
   bottom: -15px;
 }
 
-.section-title i { 
-  font-size: 2.5rem; 
-  color: var(--accent); 
-  margin-bottom: 0;
-}
-
-/* Tech Stack grid (responsive). */
+/* Tech Stack grid */
 .tech-grid {
-  display: grid; 
-  grid-template-columns: 
-  repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem; 
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
   padding-bottom: 4rem;
 }
 
-/* Card component used for Tech Stack + About info cards. */
 .tech-card {
-  background: var(--surface-card); 
+  background: var(--surface-card);
   padding: 2.5rem;
-  border-radius: 20px; 
+  border-radius: 20px;
   border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-md); 
-  backdrop-filter: blur(10px); /* soft blur for glassy effect (supported browsers) */
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
   transition: transform 0.3s ease;
 }
 
-.tech-card:hover { 
-  transform: translateY(-5px); 
-  box-shadow: var(--shadow-lg); 
+.tech-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }
 
-.tech-card h3 { 
-  margin-bottom: 2rem; 
-  display: flex; 
-  align-items: center; 
-  gap: 0.75rem; 
-  font-size: 1.5rem; 
-  border-bottom: 2px solid var(--border-color); 
+.tech-card h3 {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 1rem;
 }
 
+.tech-card i {
+  color: var(--accent);
+}
+
 .styled-list li {
-  display: flex; 
-  align-items: center; 
-  gap: 20px; 
+  display: flex;
+  align-items: center;
+  gap: 20px;
   padding: 1rem 0;
   border-bottom: 1px solid var(--border-color);
   font-weight: 600;
@@ -424,444 +444,475 @@ h1, h2, h3 {
   color: var(--text-muted);
 }
 
-.styled-list li:last-child { 
-  border-bottom: none; 
+.styled-list li:last-child {
+  border-bottom: none;
 }
 
-.styled-list i { 
-  font-size: 1.5rem; 
-  width: 40px; 
-  text-align: center; 
+.styled-list i {
+  font-size: 1.5rem;
+  width: 40px;
+  text-align: center;
 }
 
-/* ========== 6. PORTFOLIO PAGE ========== */
-
-/* Portfolio filter button container. */
+/* ========== 7. PORTFOLIO PAGE ========== */
 .filter-container {
-  display: flex; 
-  justify-content: center; 
-  gap: 1rem; 
-  margin-bottom: 2.5rem; 
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
   flex-wrap: wrap;
 }
 
-/* Portfolio filter button (active state toggled in script.js). */
 .filter-btn {
-  padding: 0.6rem 1.8rem; 
+  padding: 0.6rem 1.8rem;
   border-radius: 12px;
-  background: var(--surface-card); 
-  border: 2px solid;
-  font-family: var(--font-display); 
-  font-size: 1.1rem; 
-  font-weight: 800; 
+  background: var(--surface-card);
+  border: 2px solid var(--border-color);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
   color: var(--text-muted);
-  cursor: pointer; 
-  transition: all 0.3s ease; 
+  cursor: pointer;
+  transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
 }
 
 .filter-btn:hover {
-  transform: translateY(-3px); 
-  border-color: var(--accent); 
-  color: var(--text-main); 
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  color: var(--text-main);
   box-shadow: var(--shadow-md);
 }
 
 .filter-btn.active {
-  background: var(--accent); 
-  color: #000; 
+  background: var(--accent);
+  color: #000;
   box-shadow: var(--shadow-md);
 }
 
-/* Portfolio projects grid. */
 .portfolio-grid {
   display: grid;
-  gap: 1.5rem; 
+  gap: 1.5rem;
   padding-bottom: 4rem;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 340px));
+  justify-content: center;
+  align-content: start;
 }
 
-/* --- CARD DESIGN --- */
-
-/* Project card: image + body + actions; filtered by data-category. */
 .project-card {
-  background: var(--surface-card); 
-  border-radius: 12px; 
+  background: var(--surface-card);
+  border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
   transition: all 0.4s ease;
-  display: flex; 
+  display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
-.project-card:hover { 
-  transform: translateY(-8px); 
-  box-shadow: var(--shadow-lg); 
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
-.project-img { 
-  width: 100%; 
-  height: auto; 
+.project-img {
+  display: block;
+  width: 100%;
+  height: auto;
   aspect-ratio: 16/9;
-  object-fit: inherit; 
-  border-bottom: 1px solid var(--border-color); 
+  object-fit: cover;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.project-body { 
-  padding: 1rem; 
-  flex-grow: 1; 
-  display: flex; 
-  flex-direction: column; 
-  text-align: left; 
+.project-body {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 
-.project-body h3 { 
-  font-size: 1.3rem; 
-  margin-bottom: 0.5rem; 
-  color: var(--card-title); 
+.project-body h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--card-title);
   font-weight: 800;
 }
 
-
-.project-body p { 
+.project-body p {
   flex: 1;
-  font-size: 0.95rem; 
-  margin-bottom: 1rem; 
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
   color: var(--text-muted);
 }
 
-.upcoming-project-body { 
-  padding: 1rem; 
-  flex-grow: 1; 
-  display: flex; 
-  flex-direction: column; 
-  text-align: left; 
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
-.upcoming-project-body h3 { 
-  font-size: 1.1rem; 
-  margin-bottom: 0.5rem; 
-  color: var(--card-title); 
-  font-weight: 800;
-}
-
-.upcoming-project-body p { 
-  flex: 1;
-  font-size: 0.95rem; 
-  margin-bottom: 1rem; 
-  color: var(--text-muted);
-}
-
-
-/* Tech badge container (wraps on small screens). */
-.badges { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 0.5rem; 
-  margin-bottom: 0.75rem; 
-}
-
-/* Tech badge pill used inside project cards. */
-.badge { 
-  display: inline-flex; 
-  align-items: center; 
-  gap: 5px; 
-  padding: 6px 12px; 
-  border-radius: 6px; 
-  font-size: 0.8rem; 
-  font-weight: 700; 
-  background: var(--badge-bg); 
-  color: #FFF; 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--badge-bg);
+  color: #fff;
   box-shadow: var(--shadow-sm);
 }
 
-.badge i { 
-  color: #FFF !important; 
+.badge i {
+  color: #fff !important;
 }
 
-/* Project action buttons container. */
-.card-actions { 
-  display: flex; 
-  gap: 1rem; 
-  margin-top: auto; 
+.card-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
 }
 
-.card-btn { 
-  flex: 1; 
-  text-align: center; 
-  padding: 0.75rem; 
-  border-radius: 10px; 
-  font-weight: 700; 
-  border-color: var(--border-color);
-  transition: 0.3s; 
+.card-btn {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-weight: 700;
+  border: 2px solid var(--border-color);
+  transition: 0.3s;
   font-size: 0.85rem;
-  color: var(--btn-text); 
   box-shadow: var(--shadow-sm);
 }
 
-.card-btn.demo { 
-  background: var(--btn-demo-bg); 
+.card-btn.demo {
+  background: var(--btn-demo-bg);
   color: var(--text-main);
-  border: 2px solid;
+  border-color: var(--btn-demo-bg);
 }
 
-.card-btn.demo:hover { 
+.card-btn.demo:hover {
   background: transparent;
   color: var(--accent);
-  filter: brightness(1.1); 
-  box-shadow: var(--shadow-md); 
+  box-shadow: var(--shadow-md);
 }
 
-.card-btn.code { 
-  border: 2px solid;
+.card-btn.code {
   background: transparent;
   color: var(--text-main);
- }
+}
 
-.card-btn.code:hover { 
+.card-btn.code:hover {
   background: var(--text-main);
   color: var(--accent);
-  filter: brightness(1.1); 
-  box-shadow: var(--shadow-md); 
+  box-shadow: var(--shadow-md);
 }
 
-.appcard-btn { 
-  flex: 1; 
-  text-align: center; 
-  padding: 0.75rem; 
-  border-radius: 10px; 
-  font-weight: 700; 
-  border-color: var(--border-color);
-  transition: 0.3s; 
-  font-size: 0.7rem;
-  color: var(--btn-text); 
+/* ========== 8. CONTACT PAGE ========== */
+.contact-wrapper {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.social-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+
+.social-card {
+  width: 100px;
+  height: 100px;
+  background: var(--surface-card);
+  border-radius: 16px;
+  border: 2px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
 }
 
-.appcard-btn.demo { 
-  background: var(--btn-demo-bg); 
-  color: var(--text-main);
-  border: 2px solid;
- }
-
-.appcard-btn.demo:hover { 
-  background: transparent;
-  color: var(--accent);
-  filter: brightness(1.1); 
-  box-shadow: var(--shadow-md); 
+.social-card i {
+  font-size: 2rem;
+  margin-bottom: 0.35rem;
 }
 
-.appcard-btn.code { 
-  border: 2px solid;
-  background: transparent;
-  color: var(--text-main);
+.social-card span {
+  font-weight: 700;
+  font-size: 0.85rem;
 }
 
-.card-btn.code:hover { 
-  background: var(--text-main);
-  color: var(--accent);
-  filter: brightness(1.1); 
-  box-shadow: var(--shadow-md); 
-}
-
-/* ========== 7. CONTACT PAGE ========== */
-
-/* Contact page wrapper: centers content and controls width. */
-.contact-wrapper { 
-  max-width: 850px; 
-  margin: 0 auto; 
-}
-
-/* Contact social cards row/grid. */
-.social-grid { 
-  display: flex; 
-  justify-content: center; 
-  gap: 1.5rem; 
-  margin-bottom: 3.5rem; 
-  flex-wrap: wrap; 
-}
-
-/* Social card styling (email, GitHub, LinkedIn, X). */
-.social-card { 
-  width: 100px; 
-  height: 100px; 
-  background: var(--surface-card); 
-  border-radius: 16px; 
-  border: 2px solid; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center; 
-  transition: all 0.3s ease; 
-  box-shadow: var(--shadow-sm);
-}
-
-.social-card i { 
-  font-size: 2rem; 
-  margin-bottom: 0.35rem; 
-}
-
-.social-card span { 
-  font-weight: 700; 
-  font-size: 0.85rem; 
-}
-
-.social-card:hover { 
-  transform: translateY(-5px); 
-  box-shadow: var(--shadow-lg); 
-  border-color: var(--accent); 
+.social-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent);
   background: var(--bg-nav);
   color: var(--accent);
 }
 
-.social-card .fa-envelope { 
-  color: #EA4335; 
+.social-card .fa-envelope {
+  color: #ea4335;
 }
 
-.social-card .fa-linkedin-in { 
-  color: #0077B5; 
-}
-.social-card .fa-github, .social-card .fa-x-twitter { 
-  color: #000; 
+.social-card .fa-linkedin-in {
+  color: #0077b5;
 }
 
-body.dark-theme .social-card .fa-github, 
-body.dark-theme .social-card .fa-x-twitter { 
-  color: #FFF; 
-}
-
-/* Contact form container (inputs, labels, spacing). */
-.contact-form { 
-  background: var(--surface-card); 
-  padding: 3rem; 
-  border-radius: 24px; 
-  border: 1px solid var(--border-color); 
-  box-shadow: var(--shadow-md);
-}
-
-.form-group label { 
-  display: block; 
-  margin-bottom: 0.5rem; 
-  font-weight: 800; 
-}
-
-.form-group input, .form-group textarea { 
-  width: 100%; 
-  padding: 1rem; 
-  border-radius: 10px; 
-  border: 2px solid; 
-  background: var(--bg-nav); 
-  color: var(--text-main); 
-  font-family: var(--font-sans); 
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
- .form-group textarea{
-  height: 100px;
-}
-
-.form-group input:hover, .form-group textarea:hover { 
-  border-color: var(--text-muted); 
-  box-shadow: var(--shadow-sm); 
-  border: 2px solid var(--accent); 
-}
-
-.form-group input:focus, .form-group textarea:focus { 
-  outline: none; 
-  border-color: var(--accent); 
-  box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.2); 
-  transform: scale(1.01); 
-}
-
-/* ========== 8. SCROLL UX ========== */
-
-body::-webkit-scrollbar { 
-  width: 12px; 
-  background: transparent; 
-}
-
-body::-webkit-scrollbar-track { 
-  background: transparent; 
-}
-
-body::-webkit-scrollbar-thumb { 
-  background-color: transparent; 
-  border-radius: 12px; 
-  border: 3px solid transparent; 
-  background-clip: content-box; 
-}
-
-body.is-scrolling::-webkit-scrollbar-thumb { 
-  background-color: var(--accent); 
-}
-
-body::-webkit-scrollbar-thumb:hover { 
-  background-color: var(--accent); 
-}
-
-/* Floating scroll buttons container (shown/hidden via .show). */
-.scroll-nav {
-  position: fixed; 
-  right: 30px; 
-  bottom: 40px;
-  display: flex; 
-  flex-direction: column; 
-  gap: 15px;
-  z-index: 90; 
-  pointer-events: none; /* prevents container from blocking clicks; buttons re-enable pointer events */
-}
-
-/* Individual scroll button styling. */
-.scroll-btn {
-  width: 50px; 
-  height: 50px; 
-  border-radius: 50%; 
-  border: none;
-  background: var(--accent); 
+/* Default for light theme */
+.social-card .fa-github,
+.social-card .fa-x-twitter {
   color: #000;
-  font-size: 1.4rem; 
-  cursor: pointer; 
-  box-shadow: var(--shadow-lg);
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  opacity: 0; 
-  transform: scale(0.5); 
-  pointer-events: auto;
 }
 
-/* Visible state: script.js adds/removes this class based on scroll direction. */
-.scroll-btn.show { 
-  opacity: 1; 
-  transform: scale(1); 
+/* Dark theme icons */
+body.dark-theme .social-card .fa-github,
+body.dark-theme .social-card .fa-x-twitter {
+  color: #fff;
 }
 
-.scroll-btn:hover { 
-  filter: brightness(1.1); 
-  transform: scale(1.15); 
-}
-
-/* ========== 9. ABOUT PAGE ========== */
-
-/* About page layout wrapper (clearfix handles floated image). */
-.about-wrapper {
-  display: block;
-  background: var(--surface-card); 
+/* Contact form */
+.contact-form {
+  background: var(--surface-card);
   padding: 3rem;
-  border-radius: 24px; 
+  border-radius: 24px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-md);
 }
 
-/* Float helper for About page image on larger screens. */
-.about-img-float { 
+.contact-form-title {
+  margin-bottom: 1.5rem;
+}
+
+/* Honeypot hidden field */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  pointer-events: none;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-nav);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(234, 179, 8, 0.2);
+  transform: scale(1.01);
+}
+
+/* Accessible status text (kept, but modal is main UX) */
+.contact-status {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  min-height: 1.2em;
+}
+
+/* ========== 9. MODAL (CONTACT STATUS) ========== */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+}
+
+.modal.is-open {
+  display: block;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--modal-backdrop);
+}
+
+.modal-dialog {
+  position: relative;
+  width: min(92vw, 420px);
+  margin: 0 auto;
+  top: 18vh;
+  background: var(--surface-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.5rem 1.5rem 1.25rem;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(12px);
+  text-align: center;
+  animation: modalPop 180ms ease-out;
+}
+
+@keyframes modalPop {
+  from {
+    transform: translateY(10px) scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(217, 119, 6, 0.15);
+  border: 1px solid rgba(217, 119, 6, 0.35);
+}
+
+.modal-icon i {
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.modal-message {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.98rem;
+  margin-bottom: 1.1rem;
+  line-height: 1.5;
+}
+
+.modal-close-btn {
+  width: 100%;
+}
+
+/* ========== 10. SCROLL UX ========== */
+body::-webkit-scrollbar {
+  width: 12px;
+  background: transparent;
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+body.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
+}
+
+.scroll-nav {
+  position: fixed;
+  right: 30px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 90;
+  pointer-events: none;
+}
+
+.scroll-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: #000;
+  font-size: 1.4rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: auto;
+}
+
+body.dark-theme .scroll-btn {
+  color: #fff;
+}
+
+.scroll-btn.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.scroll-btn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.15);
+}
+
+/* ========== 11. ABOUT PAGE ========== */
+.about-wrapper {
+  display: block;
+  background: var(--surface-card);
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+.about-wrapper .tech-grid {
+  clear: both;
+  margin-top: 1.5rem;
+}
+
+.about-img-float {
   float: left;
-  margin-right: 2rem;
-  margin-bottom: 1rem;
+  margin: 0 2rem 1rem 0;
   shape-outside: circle(50%);
+  shape-margin: 16px;
   width: 220px;
   height: 220px;
   object-fit: cover;
@@ -873,176 +924,174 @@ body::-webkit-scrollbar-thumb:hover {
   text-align: left;
 }
 
-.about-text p { 
-  font-weight: 600; 
-  color: var(--text-muted); 
-  line-height: 1.8; 
+.about-text p {
+  font-weight: 600;
+  color: var(--text-muted);
+  line-height: 1.8;
 }
 
-/* Classic clearfix to contain floated children. */
-.clearfix::after { 
-  content: ""; 
-  display: table; 
-  clear: both; 
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
-/* ========== 10. FOOTER ========== */
-
-/* Footer styling used site-wide. */
-.site-footer { 
-  background: var(--bg-footer); 
-  padding: 2.5rem 0; 
-  border-top: 1px solid var(--border-color); 
-  margin-top: auto; 
+/* ========== 12. FOOTER ========== */
+.site-footer {
+  background: var(--bg-footer);
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
 }
 
-.footer-inner { 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center; 
-  flex-direction: row; 
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
 }
 
-.footer-inner p { 
+.footer-inner p {
   font-weight: 400;
   font-size: 0.9rem;
   color: var(--text-muted);
-  opacity: 1;
-} 
-
-/* Social icon row in footer. */
-.footer-social { 
-  display: flex; 
-  align-items: center; 
 }
 
-.footer-social a { 
-  font-size: 1.4rem; 
-  color: var(--text-muted); 
-  margin-left: 1.5rem; 
-  transition: 0.3s; 
+.footer-social {
+  display: flex;
+  align-items: center;
 }
 
-.footer-social a:hover { 
-  color: var(--text-main); 
-  transform: translateY(-5px); 
+.footer-social a {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  margin-left: 1.5rem;
+  transition: 0.3s;
 }
 
-.footer-social .fa-linkedin-in:hover { 
-  color: #0077B5; 
+.footer-social a:hover {
+  color: var(--text-main);
+  transform: translateY(-5px);
 }
 
-.footer-social .fa-github:hover, .footer-social .fa-x-twitter:hover { 
-  color: #000; 
-} 
-
-body.dark-theme .footer-social .fa-github:hover, 
-body.dark-theme .footer-social .fa-x-twitter:hover { 
-  color: #FFF; 
+.footer-social .fa-linkedin-in:hover {
+  color: #0077b5;
 }
 
-/* ========== 11. DARK MODE ICON ========== */
+.footer-social .fa-github:hover,
+.footer-social .fa-x-twitter:hover {
+  color: #000;
+}
 
+body.dark-theme .footer-social .fa-github:hover,
+body.dark-theme .footer-social .fa-x-twitter:hover {
+  color: #fff;
+}
+
+/* ========== 13. DARK MODE ICON FIXES ========== */
 body.dark-theme .devicon-github-original,
 body.dark-theme .devicon-github-plain,
 body.dark-theme .devicon-vercel-original,
 body.dark-theme .devicon-nextjs-plain,
 body.dark-theme .devicon-twitter-original,
 body.dark-theme .fa-github,
-body.dark-theme .fa-x-twitter { 
-  color: #FFFFFF !important; 
+body.dark-theme .fa-x-twitter {
+  color: #ffffff !important;
 }
 
 body.dark-theme .devicon-github-original.colored,
 body.dark-theme .devicon-vercel-original.colored,
-body.dark-theme .devicon-nextjs-plain.colored { 
-  color: #FFFFFF !important; 
+body.dark-theme .devicon-nextjs-plain.colored {
+  color: #ffffff !important;
 }
 
-/* ========== 12. RESPONSIVE ========== */
-
-@media (min-width: 1200px) { 
-  .portfolio-grid { 
-    grid-template-columns: repeat(4, 1fr); 
-  } 
-}
-
-@media (min-width: 900px) and (max-width: 1199px) { 
-  .portfolio-grid { 
-    grid-template-columns: repeat(3, 1fr); 
-  } 
-}
-
-@media (min-width: 600px) and (max-width: 899px) { 
-  .portfolio-grid { 
-    grid-template-columns: repeat(2, 1fr); 
-  } 
-}
-
+/* ========== 14. RESPONSIVE ========== */
+/* ---------- Tablets + mobile (nav drawer, spacing, footer) ---------- */
 @media (max-width: 768px) {
-   .theme-btn, .menu-toggle {
+  /* Header buttons smaller */
+  .theme-btn,
+  .menu-toggle {
     width: 40px;
     height: 40px;
   }
 
+  /* Mobile nav drawer */
   .nav-links {
-    position: fixed; 
-    top: 0; 
-    right: 0; 
-    height: auto;
-    width: auto;
-    max-width: 300px;
-    background: var(--bg-nav); 
-    flex-direction: column; 
-    padding: 6rem 2rem 2rem;
-    margin-top: -2rem;
-    border-bottom: 1px solid var(--border-color);
-    transform: translateY(-100%); 
-    transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
-    align-items: flex-start;
-    backdrop-filter: blur(15px); /* soft blur for glassy effect (supported browsers) */
-    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
-    z-index: 100;
-    gap: 1.5rem;
-
+    position: fixed;
+    top: calc(var(--header-height) + 12px);
+    right: 14px;
+    width: min(240px, 78vw);
+    max-height: 320px;
+    overflow-y: auto;
+    background: var(--bg-nav);
+    flex-direction: column;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    transform: translateX(110%) scale(0.98);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.28s ease, opacity 0.22s ease;
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-lg);
+    z-index: 110;
+    gap: 0.9rem;
   }
 
-/* Mobile state: shown when .open is added by script.js. */
-  .nav-links.open { 
-    transform: translateY(0);
-    background: var(--bg-body);
-    border-left: 1px solid;
-    border-bottom: 1px solid;
-    border-color: 1px solid var(--border-color);
-    border-radius: 0 0 0 20px; 
+  .nav-links.open {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
   }
 
-  .nav-links a { 
-    font-size: 1rem; 
-    width: 100%; 
-    border-bottom: 1px solid var(--border-color); 
-    padding-bottom: 0.8rem; 
+  .nav-links li {
+    width: 100%;
   }
 
-  .menu-toggle { 
+  .nav-links a {
     display: flex;
-    z-index: 101;
+    align-items: center;
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--text-main);
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 0.75rem 0.85rem;
   }
 
-   .styled-list li {
-    text-align: left;
+  .nav-links a:hover {
+    background: var(--surface-card);
+    border-color: var(--border-color);
   }
 
-  .hero-img-style { 
-    width: 180px; 
-    height: 180px; 
+  /* Show hamburger */
+  .menu-toggle {
+    display: flex;
+    z-index: 120;
   }
 
-  .about-wrapper { 
-    padding: 1.5rem; 
-    text-align: center; 
+  /* Hero image shrink */
+  .hero-img-style {
+    width: 180px;
+    height: 180px;
   }
 
+  /* About becomes simpler */
+  .about-wrapper {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  /* disable text-wrapping around the image for cleaner layout */
+  .about-img-float {
+    width: 160px;
+    height: 160px;                  
+    margin: 0 1rem .75rem 0;        
+    shape-margin: 10px;       
+  }
+
+  /* Contact social cards shrink */
   .social-card {
     width: 60px;
     height: 65px;
@@ -1053,24 +1102,31 @@ body.dark-theme .devicon-nextjs-plain.colored {
     font-size: 0.7rem;
   }
 
-  .social-card i{
+  .social-card i {
     font-size: 1.5rem;
   }
 
-  .footer-inner { 
-    flex-direction: column; 
-    gap: 1rem; 
-    text-align: center; 
+  /* Footer stacks */
+  .footer-inner {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
 
-  .footer-social a { 
-    margin: 0 0.8rem; 
+  .footer-social a {
+    margin: 0 0.8rem;
+  }
+
+  /* Modal position on smaller screens */
+  .modal-dialog {
+    top: 16vh;
   }
 }
 
+/* ---------- Small phones ---------- */
 @media (max-width: 480px) {
-  :root { 
-    --page-pad: 1.25rem; 
+  :root {
+    --page-pad: 1.25rem;
   }
 
   .logo a {
@@ -1078,37 +1134,31 @@ body.dark-theme .devicon-nextjs-plain.colored {
     font-weight: 700;
   }
 
-  .theme-btn, .menu-toggle {
+  .theme-btn,
+  .menu-toggle {
     width: 35px;
     height: 35px;
   }
 
-  .home-hero h1 { 
-    font-size: 1.6rem; 
+  .home-hero h1 {
+    font-size: 1.6rem;
   }
 
-  .hero-img-style { 
-    width: 150px; 
-    height: 150px; 
+  .hero-img-style {
+    width: 150px;
+    height: 150px;
   }
 
-  .about-img-float { 
+  .about-img-float {
     width: 110px;
     height: 110px;
   }
 
-  .about-text p { 
-    font-size: 0.8rem; 
+  .about-text p {
+    font-size: 0.8rem;
   }
 
-  .btn-group {     
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .btn { 
+  .btn {
     font-weight: 800;
     font-size: 12px;
   }
@@ -1125,30 +1175,117 @@ body.dark-theme .devicon-nextjs-plain.colored {
     font-size: 1.3rem;
   }
 
-   .tech-grid, .portfolio-grid { 
-    grid-template-columns: 1fr; 
+  .tech-grid,
+  .portfolio-grid {
+    grid-template-columns: 1fr;
   }
-  
+
   .styled-list li {
     font-size: 0.8rem;
     text-align: left;
   }
 
-  .filter-container { 
-    gap: 0.8rem; 
+  .filter-container {
+    gap: 0.8rem;
   }
 
-  .filter-btn { 
-    padding: 0.6rem 1.5rem; 
-    font-size: 1rem; 
-    width: 30%; 
+  .filter-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    width: 30%;
   }
 
-  .contact-form { 
-    padding: 1.5rem; 
+  .contact-form {
+    padding: 1.5rem;
   }
 
-  .footer-inner p{
+  .footer-inner p {
     font-size: 0.75rem;
+  }
+
+  .modal-dialog {
+    width: min(92vw, 380px);
+    top: 14vh;
+  }
+}
+
+/* ---------- Ultra-small phones (360px) ---------- */
+@media (max-width: 360px) {
+  :root {
+    --page-pad: 1rem;
+    --header-height: 76px;
+  }
+
+  .logo a {
+    font-size: 1.05rem;
+  }
+
+  .theme-btn,
+  .menu-toggle {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  .nav-links {
+    max-width: 260px;
+    padding: 5.25rem 1.25rem 1.25rem;
+    gap: 1.15rem;
+  }
+
+  .home-hero {
+    padding: 3.5rem 0;
+  }
+
+  .hero-img-style {
+    width: 140px;
+    height: 140px;
+    border-width: 5px;
+  }
+
+  .home-hero h1 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .lead {
+    font-size: 0.98rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .btn {
+    padding: 0.85rem 1.3rem;
+    font-size: 0.85rem;
+  }
+
+  .tech-card {
+    padding: 1.4rem;
+  }
+
+  .filter-btn {
+    font-size: 0.95rem;
+    padding: 0.55rem 1.1rem;
+  }
+
+  .contact-form {
+    padding: 1.25rem;
+  }
+
+  .modal-dialog {
+    width: min(92vw, 340px);
+    top: 12vh;
+    padding: 1.25rem;
+  }
+
+  .scroll-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+  }
+
+  .scroll-nav {
+    right: 18px;
+    bottom: 22px;
+    gap: 12px;
   }
 }
