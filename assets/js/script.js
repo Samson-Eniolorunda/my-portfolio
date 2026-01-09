@@ -159,20 +159,75 @@ function initMenu() {
   // Exit safely if not on the page
   if (!menuBtn || !navLinks) return;
 
-  // Toggle the mobile drawer
-  menuBtn.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
+  const mobileMQ = window.matchMedia("(max-width: 768px)");
 
-    // Swap hamburger ↔ close icon
-    menuBtn.innerHTML = navLinks.classList.contains("open")
+  function setMenuState(isOpen) {
+    navLinks.classList.toggle("open", isOpen);
+
+    // Button icon swap
+    menuBtn.innerHTML = isOpen
       ? '<i class="fa-solid fa-xmark"></i>'
       : '<i class="fa-solid fa-bars"></i>';
+
+    // A11y helpers (no HTML changes required)
+    menuBtn.setAttribute("aria-expanded", String(isOpen));
+    menuBtn.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+
+    // Lock background scroll only on mobile
+    if (mobileMQ.matches) {
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    }
+  }
+
+  // Ensure consistent initial state
+  setMenuState(false);
+
+  // Toggle the mobile drawer
+  menuBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // prevents weird close/open conflicts
+    setMenuState(!navLinks.classList.contains("open"));
   });
 
-  // Auto-close the menu after clicking a link (mobile UX)
+  // Close menu after clicking a link (mobile UX)
   navLinks.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => navLinks.classList.remove("open"));
+    link.addEventListener("click", () => setMenuState(false));
   });
+
+  // Close on ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navLinks.classList.contains("open")) {
+      setMenuState(false);
+    }
+  });
+
+  // Close if user taps/clicks outside
+  function handleOutside(e) {
+    if (!navLinks.classList.contains("open")) return;
+
+    const clickedInsideMenu = navLinks.contains(e.target);
+    const clickedMenuBtn = menuBtn.contains(e.target);
+
+    if (!clickedInsideMenu && !clickedMenuBtn) {
+      setMenuState(false);
+    }
+  }
+
+  // Desktop click
+  document.addEventListener("click", handleOutside, true);
+
+  // Mobile tap
+  document.addEventListener("touchstart", handleOutside, { passive: true });
+
+  // If switching to desktop size, close + restore scroll
+  const onResize = () => {
+    if (!mobileMQ.matches) {
+      setMenuState(false);
+      document.body.style.overflow = "";
+    }
+  };
+
+  if (mobileMQ.addEventListener) mobileMQ.addEventListener("change", onResize);
+  else mobileMQ.addListener(onResize); // older Safari fallback
 }
 
 /* ========== 5) TYPEWRITER (HOME ONLY) ========== */
