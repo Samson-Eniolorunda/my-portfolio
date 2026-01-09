@@ -1026,10 +1026,10 @@ body.dark-theme .devicon-nextjs-plain.colored {
   /* Mobile nav drawer */
   .nav-links {
     position: fixed;
-    top: calc(var(--header-height) + 12px);
+    top: calc(var(--header-height) + 5px);
     right: 14px;
     width: min(240px, 78vw);
-    max-height: 320px;
+    max-height: 80vh;
     overflow-y: auto;
     background: var(--bg-nav);
     flex-direction: column;
