@@ -127,6 +127,13 @@ body {
   transition: background 0.4s ease, color 0.4s ease;
 }
 
+/* Prevent horizontal page shifting / sideways scroll */
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 /* Reusable content container */
 .container {
   width: 100%;
@@ -694,7 +701,8 @@ body.dark-theme .social-card .fa-x-twitter {
 /* Honeypot hidden field */
 .hp-field {
   position: absolute;
-  left: -9999px;
+  top: -9999px;
+  left: 0;
   opacity: 0;
   height: 0;
   width: 0;
@@ -1028,10 +1036,11 @@ body.dark-theme .devicon-nextjs-plain.colored {
     padding: 1rem 1.1rem;
     border: 1px solid var(--border-color);
     border-radius: 18px;
-    transform: translateX(110%) scale(0.98);
+    transform: translateY(10px) scale(0.98);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: 0.28s ease, opacity 0.22s ease;
+    transition: transform 0.28s ease, opacity 0.22s ease, visibility 0.22s ease;
     backdrop-filter: blur(16px);
     box-shadow: var(--shadow-lg);
     z-index: 110;
@@ -1039,13 +1048,10 @@ body.dark-theme .devicon-nextjs-plain.colored {
   }
 
   .nav-links.open {
-    transform: translateX(0) scale(1);
+    transform: translateY(0) scale(1);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
-  }
-
-  .nav-links li {
-    width: 100%;
   }
 
   .nav-links a {
@@ -1083,7 +1089,7 @@ body.dark-theme .devicon-nextjs-plain.colored {
     text-align: center;
   }
 
-  /* disable text-wrapping around the image for cleaner layout */
+  /* smaller floated image on tablets */
   .about-img-float {
     width: 160px;
     height: 160px;                  
