@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!-- ==========================================================================
   FILE: contact.html
   PURPOSE: Contact page — social links + an active contact form.
@@ -18,203 +18,281 @@
   - CDN: Google Fonts + Font Awesome
 ============================================================================= -->
 <html lang="en">
-<head>
-  <!-- =========================
+  <head>
+    <!-- =========================
     HEAD: DOCUMENT METADATA
   ========================== -->
 
-  <!-- Basic metadata -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Basic metadata -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- SEO metadata -->
-  <meta
-    name="description"
-    content="Get in touch with Samson Eniolorunda via email, GitHub, LinkedIn or X. Send a message directly using the contact form."
-  />
-  <meta name="author" content="Samson Eniolorunda" />
-  <meta name="keywords" content="contact Samson Eniolorunda, frontend developer contact" />
-  <meta name="robots" content="index, follow" />
+    <!-- SEO metadata -->
+    <meta
+      name="description"
+      content="Get in touch with Samson Eniolorunda via email, GitHub, LinkedIn or X. Send a message directly using the contact form."
+    />
+    <meta name="author" content="Samson Eniolorunda" />
+    <meta
+      name="keywords"
+      content="contact Samson Eniolorunda, frontend developer contact"
+    />
+    <meta name="robots" content="index, follow" />
 
-  <!-- Title -->
-  <title>Contact | Samson Eniolorunda</title>
+    <!-- Title -->
+    <title>Contact | Samson Eniolorunda</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
-  <!-- =========================
+    <!-- =========================
     HEAD: STYLES + ICONS
   ========================== -->
 
-  <!-- Typography -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap"
-    rel="stylesheet"
-  />
+    <!-- Typography -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="assets/css/styles.css" />
-</head>
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
 
-<body>
-  <!-- =========================
+  <body>
+    <!-- =========================
     UI: FLOATING SCROLL CONTROLS
   ========================== -->
-  <div id="scrollNav" class="scroll-nav">
-    <button id="btnPageUp" class="scroll-btn" aria-label="Scroll Up"><i class="fa-solid fa-chevron-up"></i></button>
-    <button id="btnPageDown" class="scroll-btn" aria-label="Scroll Down"><i class="fa-solid fa-chevron-down"></i></button>
-  </div>
+    <div id="scrollNav" class="scroll-nav">
+      <button id="btnPageUp" class="scroll-btn" aria-label="Scroll Up">
+        <i class="fa-solid fa-chevron-up"></i>
+      </button>
+      <button id="btnPageDown" class="scroll-btn" aria-label="Scroll Down">
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+    </div>
 
-  <!-- =========================
+    <!-- =========================
     HEADER: SITE NAVIGATION
   ========================== -->
-  <header class="site-header">
-    <div class="container nav-inner">
-      <div class="logo">
-        <a href="index.html">Samson Eniolorunda</a>
+    <header class="site-header">
+      <div class="container nav-inner">
+        <div class="logo">
+          <a href="index.html">Samson Eniolorunda</a>
+        </div>
+
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <button class="menu-toggle" aria-label="Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
       </div>
+    </header>
 
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="portfolio.html">Portfolio</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
-      </ul>
-
-      <div class="nav-actions">
-        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
-        <button class="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
-      </div>
-    </div>
-  </header>
-
-  <!-- =========================
+    <!-- =========================
     MAIN: PAGE CONTENT
   ========================== -->
-  <main class="container page-section">
-    <div class="contact-wrapper">
-      <!-- Page title -->
-      <h1 class="section-title">Get In Touch</h1>
-      <p class="section-subtitle">
-        If you have an exciting project or opportunity, I'd love to hear from you.
-      </p>
+    <main class="container page-section">
+      <div class="contact-wrapper">
+        <!-- Page title -->
+        <h1 class="section-title">Get In Touch</h1>
+        <p class="section-subtitle">
+          If you have an exciting project or opportunity, I'd love to hear from
+          you.
+        </p>
 
-      <!-- =========================
+        <!-- =========================
         GROUP: SOCIAL LINKS
       ========================== -->
-      <div class="social-grid">
-        <a href="mailto:samsoneniolorunda@gmail.com" class="social-card" aria-label="Email">
-          <i class="fa-solid fa-envelope"></i>
-          <span>Email</span>
-        </a>
+        <div class="social-grid">
+          <a
+            href="mailto:samsoneniolorunda@gmail.com"
+            class="social-card"
+            aria-label="Email"
+          >
+            <i class="fa-solid fa-envelope"></i>
+            <span>Email</span>
+          </a>
 
-        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" class="social-card" aria-label="LinkedIn">
-          <i class="fa-brands fa-linkedin-in"></i>
-          <span>LinkedIn</span>
-        </a>
+          <a
+            href="https://linkedin.com/in/samson-eniolorunda"
+            target="_blank"
+            class="social-card"
+            aria-label="LinkedIn"
+          >
+            <i class="fa-brands fa-linkedin-in"></i>
+            <span>LinkedIn</span>
+          </a>
 
-        <a href="https://github.com/Samson-Eniolorunda" target="_blank" class="social-card" aria-label="GitHub">
-          <i class="fa-brands fa-github"></i>
-          <span>GitHub</span>
-        </a>
+          <a
+            href="https://github.com/Samson-Eniolorunda"
+            target="_blank"
+            class="social-card"
+            aria-label="GitHub"
+          >
+            <i class="fa-brands fa-github"></i>
+            <span>GitHub</span>
+          </a>
 
-        <a href="https://x.com/s_eniolorunda_" target="_blank" class="social-card" aria-label="X">
-          <i class="fa-brands fa-x-twitter"></i>
-          <span>X</span>
-        </a>
-      </div>
+          <a
+            href="https://x.com/s_eniolorunda_"
+            target="_blank"
+            class="social-card"
+            aria-label="X"
+          >
+            <i class="fa-brands fa-x-twitter"></i>
+            <span>X</span>
+          </a>
+        </div>
 
-      <!-- =========================
+        <!-- =========================
         GROUP: CONTACT FORM
         - Wired in script.js: initContact()
       ========================== -->
-      <form class="contact-form" id="contactForm">
-        <h2 class="contact-form-title">Send a Message</h2>
+        <form class="contact-form" id="contactForm">
+          <h2 class="contact-form-title">Send a Message</h2>
 
-        <!-- Honeypot field (anti-spam): hidden by CSS via .hp-field -->
-        <input
-          class="hp-field"
-          type="text"
-          name="company"
-          id="company"
-          autocomplete="off"
-          tabindex="-1"
-          aria-hidden="true"
-        />
+          <!-- Honeypot field (anti-spam): hidden by CSS via .hp-field -->
+          <input
+            class="hp-field"
+            type="text"
+            name="company"
+            id="company"
+            autocomplete="off"
+            tabindex="-1"
+            aria-hidden="true"
+          />
 
-        <!-- Name -->
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your Full Name" required />
-        </div>
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Your Full Name"
+              required
+            />
+          </div>
 
-        <!-- Email -->
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required />
-        </div>
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="your@email.com"
+              required
+            />
+          </div>
 
-        <!-- Message -->
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="How can I help you?" required></textarea>
-        </div>
+          <!-- Message -->
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="How can I help you?"
+              required
+            ></textarea>
+          </div>
 
-        <!-- Accessible status text (secondary UX, modal is primary UX) -->
-        <p id="contactStatus" class="contact-status" aria-live="polite"></p>
+          <!-- Accessible status text (secondary UX, modal is primary UX) -->
+          <p id="contactStatus" class="contact-status" aria-live="polite"></p>
 
-        <!-- Submit -->
-        <button id="contactSubmitBtn" type="submit" class="btn btn-primary btn-block">
-          Send Message
-        </button>
-      </form>
-    </div>
-  </main>
+          <!-- Submit -->
+          <button
+            id="contactSubmitBtn"
+            type="submit"
+            class="btn btn-primary btn-block"
+          >
+            Send Message
+          </button>
+        </form>
+      </div>
+    </main>
 
-  <!-- =========================
+    <!-- =========================
     FOOTER: SITE FOOTER
   ========================== -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© <span id="year">2025</span> Samson Eniolorunda. All rights reserved.</p>
-      <div class="footer-social">
-        <a href="https://linkedin.com/in/samson-eniolorunda" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="https://github.com/Samson-Eniolorunda" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        <a href="https://x.com/s_eniolorunda_" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>
+          © <span id="year">2025</span> Samson Eniolorunda. All rights reserved.
+        </p>
+        <div class="footer-social">
+          <a
+            href="https://linkedin.com/in/samson-eniolorunda"
+            target="_blank"
+            aria-label="LinkedIn"
+            ><i class="fa-brands fa-linkedin-in"></i
+          ></a>
+          <a
+            href="https://github.com/Samson-Eniolorunda"
+            target="_blank"
+            aria-label="GitHub"
+            ><i class="fa-brands fa-github"></i
+          ></a>
+          <a href="https://x.com/s_eniolorunda_" target="_blank" aria-label="X"
+            ><i class="fa-brands fa-x-twitter"></i
+          ></a>
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
 
-  <!-- =========================
+    <!-- =========================
     UI: CONTACT MODAL (used by script.js)
     - Opens on success/error
     - Closes via button, backdrop click, or ESC key
   ========================== -->
-  <div id="contactModal" class="modal" aria-hidden="true">
-    <!-- Backdrop -->
-    <div class="modal-backdrop" data-modal-close></div>
+    <div id="contactModal" class="modal" aria-hidden="true">
+      <!-- Backdrop -->
+      <div class="modal-backdrop" data-modal-close></div>
 
-    <!-- Dialog -->
-    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
-      <div id="contactModalIcon" class="modal-icon">
-        <!-- Icon injected by JS -->
+      <!-- Dialog -->
+      <div
+        class="modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contactModalTitle"
+      >
+        <div id="contactModalIcon" class="modal-icon">
+          <!-- Icon injected by JS -->
+        </div>
+
+        <h3 id="contactModalTitle" class="modal-title">Status</h3>
+        <p id="contactModalMsg" class="modal-message">Message</p>
+
+        <button
+          class="btn btn-primary modal-close-btn"
+          type="button"
+          data-modal-close
+        >
+          Close
+        </button>
       </div>
-
-      <h3 id="contactModalTitle" class="modal-title">Status</h3>
-      <p id="contactModalMsg" class="modal-message">Message</p>
-
-      <button class="btn btn-primary modal-close-btn" type="button" data-modal-close>
-        Close
-      </button>
     </div>
-  </div>
 
-  <!-- =========================
+    <!-- =========================
     SCRIPTS: SITE-WIDE JAVASCRIPT
   ========================== -->
-  <script src="assets/js/script.js"></script>
-</body>
+    <script src="assets/js/script.js"></script>
+  </body>
 </html>

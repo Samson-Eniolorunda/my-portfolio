@@ -1,12 +1,3 @@
-
-
-
-
-
-
-
-
-
 /* ==========================================================================
   FILE: script.js
   PROJECT: Samson Eniolorunda Portfolio Website — Frontend Logic
@@ -31,7 +22,11 @@
 ============================================================================= */
 
 /* ========== TYPEWRITER DATA (HOME ONLY) ========== */
-const typedStrings = ["Front-End Developer", "Problem Solver", "Web Enthusiast"];
+const typedStrings = [
+  "Front-End Developer",
+  "Problem Solver",
+  "Web Enthusiast",
+];
 
 let typedIndex = 0; // Which phrase in typedStrings is active
 let charIndex = 0; // Current character position inside the active phrase
@@ -67,7 +62,10 @@ function initDirectionalScroll() {
     // Add "is-scrolling" class while user is actively scrolling
     document.body.classList.add("is-scrolling");
     clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => document.body.classList.remove("is-scrolling"), 500);
+    scrollTimeout = setTimeout(
+      () => document.body.classList.remove("is-scrolling"),
+      500,
+    );
 
     if (currentScrollY > lastScrollY) {
       // Scrolling down
@@ -437,7 +435,8 @@ function initContact() {
 
         openModal({
           title: "Not Sent",
-          message: "❌ Your message could not be sent. Please try again in a moment.",
+          message:
+            "❌ Your message could not be sent. Please try again in a moment.",
           ok: false,
         });
         return;
@@ -458,7 +457,8 @@ function initContact() {
 
       openModal({
         title: "Network Error",
-        message: "⚠️ Network error. Please check your connection and try again.",
+        message:
+          "⚠️ Network error. Please check your connection and try again.",
         ok: false,
       });
     } finally {

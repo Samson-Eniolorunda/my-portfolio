@@ -41,11 +41,18 @@ module.exports = async (req, res) => {
     return res.end("Method Not Allowed");
   }
 
-  const endpoint = resolveFormspreeEndpoint(process.env.PORTFOLIO_FORMSPREE_ENDPOINT);
+  const endpoint = resolveFormspreeEndpoint(
+    process.env.PORTFOLIO_FORMSPREE_ENDPOINT,
+  );
   if (!endpoint) {
     res.statusCode = 500;
     res.setHeader("Content-Type", "application/json");
-    return res.end(JSON.stringify({ ok: false, error: "Missing PORTFOLIO_FORMSPREE_ENDPOINT" }));
+    return res.end(
+      JSON.stringify({
+        ok: false,
+        error: "Missing PORTFOLIO_FORMSPREE_ENDPOINT",
+      }),
+    );
   }
 
   try {
@@ -59,14 +66,16 @@ module.exports = async (req, res) => {
     if (!name || !email || !message) {
       res.statusCode = 400;
       res.setHeader("Content-Type", "application/json");
-      return res.end(JSON.stringify({ ok: false, error: "Missing required fields" }));
+      return res.end(
+        JSON.stringify({ ok: false, error: "Missing required fields" }),
+      );
     }
 
     const r = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
         "User-Agent": "Portfolio-Form-Proxy/1.0",
       },
       body: JSON.stringify({

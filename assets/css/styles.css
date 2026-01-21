@@ -124,7 +124,9 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  transition: background 0.4s ease, color 0.4s ease;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
 }
 
 /* Prevent horizontal page shifting / sideways scroll */
@@ -505,7 +507,7 @@ h3 {
   display: grid;
   gap: 1.5rem;
   padding-bottom: 4rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(340px,100%), 340px));
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 340px));
   justify-content: center;
   align-content: start;
 }
@@ -1044,7 +1046,10 @@ body.dark-theme .devicon-nextjs-plain.colored {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: transform 0.28s ease, opacity 0.22s ease, visibility 0.22s ease;
+    transition:
+      transform 0.28s ease,
+      opacity 0.22s ease,
+      visibility 0.22s ease;
     backdrop-filter: blur(16px);
     box-shadow: var(--shadow-lg);
     z-index: 110;
@@ -1096,9 +1101,9 @@ body.dark-theme .devicon-nextjs-plain.colored {
   /* smaller floated image on tablets */
   .about-img-float {
     width: 160px;
-    height: 160px;                  
-    margin: 0 1rem .75rem 0;        
-    shape-margin: 10px;       
+    height: 160px;
+    margin: 0 1rem 0.75rem 0;
+    shape-margin: 10px;
   }
 
   /* Contact social cards shrink */
@@ -1118,7 +1123,7 @@ body.dark-theme .devicon-nextjs-plain.colored {
 
   /* Footer stacks */
   .footer-inner {
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 1rem;
     text-align: center;
   }
