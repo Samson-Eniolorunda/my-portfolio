@@ -1,38 +1,111 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Github, MapPin } from "lucide-react";
-import { earlier, featured, profile, projects, skills } from "@/data/site";
+import { ArrowRight, ArrowUpRight, Download } from "lucide-react";
+import { earlier, education, experience, featured, principles, profile, projects, type Project } from "@/data/site";
+import { formatDate, notes } from "@/data/notes";
 import { ContactForm } from "@/components/ContactForm";
 import { SocialLinks } from "@/components/SocialLinks";
+import { Button, SectionHead, Stack } from "@/components/ui";
 
-function SectionHead({ kicker, title, intro }: { kicker: string; title: string; intro?: string }) {
-  return (
-    <div className="mb-10 max-w-2xl">
-      <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-accent">{kicker}</p>
-      <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
-      {intro && <p className="mt-4 text-muted">{intro}</p>}
+const FACTS = [
+  ["Now", "Running Vantage Gold"],
+  ["Based in", "Lagos, Nigeria (WAT)"],
+  ["Open to", profile.openTo],
+  ["Main tools", "TypeScript · Next.js · PostgreSQL · Gemini"],
+];
+
+/** A drawn spreadsheet for the client project that has no public screen. */
+function SheetSketch() {
+  const rows = [
+    ["Booking", "Client", "Service", "Invoice"],
+    ["0001", "Client A", "Weekly", "Sent"],
+    ["0002", "Client B", "One-off", "Sent"],
+    ["0003", "Client C", "Weekly", "Due"],
+    ["0004", "Client D", "Monthly", "Draft"],
+  ];  return (
+    <div className="relative flex aspect-[16/10] w-full items-center justify-center bg-raised p-5">
+      <div aria-hidden className="w-full border border-line bg-surface font-mono text-[11px]">
+        {rows.map((r, i) => (
+          <div key={r[0]} className={`grid grid-cols-[0.8fr_1.6fr_0.8fr_0.8fr] ${i ? "border-t border-line text-muted" : "bg-raised text-fg"}`}>
+            {r.map((c, j) => (
+              <span key={j} className={`truncate px-2 py-1.5 ${j ? "border-l border-line" : ""} ${c === "Due" ? "text-accent" : ""}`}>
+                {c}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+      <p className="label absolute bottom-2 right-3 text-[0.6rem] text-subtle">Illustration · system is private</p>
     </div>
   );
 }
 
-function Chip({ children }: { children: React.ReactNode }) {
-  return <span className="rounded-full border border-line bg-raised px-3 py-1 font-mono text-xs text-muted">{children}</span>;
+function ProjectRow({ p, n }: { p: Project; n: number }) {
+  return (
+    <article className="reveal grid gap-6 border-t border-line py-10 md:grid-cols-[3rem_1fr_minmax(0,22rem)] md:gap-8">
+      <p className="label text-subtle">{String(n).padStart(2, "0")}</p>
+      <div className="min-w-0">
+        <p className="label text-subtle">
+          {p.kind}
+          {p.year && ` · ${p.year}`}
+        </p>
+        <h3 className="display mt-2 text-3xl">{p.name}</h3>
+        <p className="mt-3 max-w-xl text-muted">{p.summary}</p>
+        <ul className="mt-4 max-w-xl space-y-1.5 text-sm text-muted">
+          {p.points.map((x) => (
+            <li key={x} className="flex gap-3">
+              <span className="mt-[0.6em] h-px w-3 shrink-0 bg-accent" aria-hidden />
+              {x}
+            </li>
+          ))}
+        </ul>
+        <Stack items={p.stack} className="mt-5" />
+        <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+          {p.live && (
+            <a href={p.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline decoration-line underline-offset-4 hover:decoration-accent">
+              Live site <ArrowUpRight className="size-4" />
+            </a>
+          )}
+          {p.code && (
+            <a href={p.code} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline decoration-line underline-offset-4 hover:decoration-accent">
+              Code <ArrowUpRight className="size-4" />
+            </a>
+          )}
+          {p.note && <span className="font-normal text-subtle">{p.note}</span>}
+        </div>
+      </div>
+      <div className="overflow-hidden border border-line md:self-start">
+        {p.image ? (
+          <Image src={p.image} alt={p.imageAlt ?? ""} width={1440} height={900} className="aspect-[16/10] w-full object-cover object-top" />
+        ) : (
+          <SheetSketch />
+        )}
+      </div>
+    </article>
+  );
 }
 
-function LinkButton({ href, children, primary = false }: { href: string; children: React.ReactNode; primary?: boolean }) {
-  const external = href.startsWith("http");
+function Timeline({ items }: { items: typeof experience }) {
   return (
-    <a
-      href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={
-        primary
-          ? "inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
-          : "inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent"
-      }
-    >
-      {children}
-    </a>
+    <ol>
+      {items.map((r) => (
+        <li key={r.org} className="grid gap-1 border-t border-line py-5 sm:grid-cols-[9.5rem_1fr] sm:gap-6">
+          <p className="font-mono text-xs text-subtle sm:pt-1">{r.dates || "Client project"}</p>
+          <div>
+            <h3 className="font-medium">
+              {r.title}, <span className="text-muted">{r.org}</span>
+            </h3>
+            {r.points.length > 0 && (
+              <ul className="mt-2 space-y-1.5 text-sm text-muted">
+                {r.points.map((x) => (
+                  <li key={x}>{x}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -40,228 +113,191 @@ export default function Home() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden className="hero-glow pointer-events-none absolute inset-0" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 pb-20 pt-16 sm:px-8 md:grid-cols-[1.4fr_1fr] md:pb-28 md:pt-24">
+      <section className="mx-auto max-w-6xl px-5 pb-6 pt-12 sm:px-8 md:pt-20">
+        <div className="grid gap-10 md:grid-cols-[1fr_15rem] md:items-end lg:grid-cols-[1fr_17rem]">
           <div>
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted">
-              <span className="size-2 rounded-full bg-emerald-400" aria-hidden /> Available for freelance and full-time work
+            <p className="label flex items-center gap-2 text-muted">
+              <span className="size-2 rounded-full bg-ok" aria-hidden /> {profile.role} · {profile.location}
             </p>
-            <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-              Hi, I&apos;m Samson.
-              <br />
-              <span className="text-accent">I build products</span> people use.
+            <h1 className="display mt-6 text-[3.4rem] sm:text-7xl lg:text-[5.75rem]">
+              I build software, <em className="text-accent">then I keep it running.</em>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted">{profile.intro}</p>
+            <p className="mt-8 max-w-2xl text-lg text-muted">{profile.intro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <LinkButton href="#work" primary>
-                See my work <ArrowRight className="size-4" />
-              </LinkButton>
-              <LinkButton href="#contact">Get in touch</LinkButton>
+              <Button href="#work" solid>
+                See the work <ArrowRight className="size-4" />
+              </Button>
+              <Button href={profile.cvPdf} download>
+                Download CV <Download className="size-4" />
+              </Button>
             </div>
-            <p className="mt-8 flex items-center gap-2 text-sm text-subtle">
-              <MapPin className="size-4" aria-hidden /> {profile.location}
-            </p>
           </div>
-          <div className="relative mx-auto w-full max-w-xs md:max-w-none">
-            <div aria-hidden className="absolute -inset-3 rounded-[2rem] bg-accent-soft blur-2xl" />
+          <figure className="hidden md:block">
             <Image
               src="/images/profile.jpg"
               alt={profile.name}
               width={480}
-              height={480}
+              height={600}
               priority
-              className="relative aspect-square w-full rounded-[2rem] border border-line object-cover"
+              className="aspect-[4/5] w-full border border-line object-cover grayscale-[35%]"
             />
-          </div>
+          </figure>
         </div>
+        <dl className="mt-14 grid gap-px border-y border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+          {FACTS.map(([k, v]) => (
+            <div key={k} className="bg-bg py-4 sm:px-4">
+              <dt className="label text-subtle">{k}</dt>
+              <dd className="mt-1 text-sm">{v}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
-      {/* ── Featured: Vantage Gold ── */}
-      <section id="work" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <SectionHead kicker="Featured project" title={featured.name} intro={featured.tagline} />
-        <article className="reveal overflow-hidden rounded-3xl border border-line bg-surface">
-          <div className="grid gap-0 lg:grid-cols-[1.25fr_1fr]">
-            <div className="flex items-center border-b border-line bg-raised p-3 lg:border-b-0 lg:border-r">
-              {/* The whole screenshot at its own shape (cropping cut the headline). */}
-              <Image
-                src={featured.image}
-                alt={featured.imageAlt}
-                width={1440}
-                height={900}
-                className="h-auto w-full rounded-2xl border border-line"
-              />
-            </div>
-            <div className="flex flex-col p-6 sm:p-8">
-              <p className="text-muted">{featured.description}</p>
-              <ul className="mt-6 space-y-2.5 text-sm">
-                {featured.highlights.map((h) => (
-                  <li key={h} className="flex gap-2.5">
-                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
-                    {h}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {featured.stack.map((s) => (
-                  <Chip key={s}>{s}</Chip>
-                ))}
-              </div>
-              <div className="mt-auto flex flex-wrap gap-3 pt-8">
-                <Link
-                  href={featured.caseStudy}
-                  className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90"
-                >
-                  Read the case study <ArrowRight className="size-4" />
-                </Link>
-                {featured.live && (
-                  <LinkButton href={featured.live}>
-                    Visit the site <ArrowUpRight className="size-4" />
-                  </LinkButton>
-                )}
-              </div>
+      {/* ── 01 Work ── */}
+      <section id="work" className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <SectionHead n="01" kicker="Selected work" title="Products that real people use." />
+
+        <article className="reveal grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-12">
+          <Link href={featured.caseStudy} className="group block overflow-hidden border border-line bg-raised p-2 lg:self-start">
+            <Image
+              src={featured.image}
+              alt={featured.imageAlt}
+              width={1440}
+              height={900}
+              className="h-auto w-full transition-transform duration-500 group-hover:scale-[1.015]"
+            />
+          </Link>
+          <div className="flex flex-col">
+            <p className="label text-subtle">
+              Featured · {featured.year}
+            </p>
+            <h3 className="display mt-2 text-5xl">{featured.name}</h3>
+            <p className="mt-2 text-lg">{featured.tagline}</p>
+            <p className="mt-4 text-muted">{featured.summary}</p>
+            <dl className="mt-6 border-t border-line">
+              {featured.stats.map((s) => (
+                <div key={s.label} className="flex items-baseline justify-between gap-4 border-b border-line py-2.5">
+                  <dt className="text-sm text-muted">{s.label}</dt>
+                  <dd className="font-mono text-lg tabular-nums">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+            <Stack items={featured.stack} className="mt-5" />
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button href={featured.caseStudy} solid>
+                Read the case study <ArrowRight className="size-4" />
+              </Button>
+              <Button href={featured.live}>
+                Visit the site <ArrowUpRight className="size-4" />
+              </Button>
             </div>
           </div>
-          <dl className="grid grid-cols-2 border-t border-line sm:grid-cols-4">
-            {featured.stats.map((s, i) => (
-              <div key={s.label} className={`p-5 sm:p-6 ${i % 2 ? "border-l border-line" : ""} ${i > 1 ? "border-t border-line sm:border-t-0" : ""} ${i === 2 ? "sm:border-l" : ""}`}>
-                <dt className="text-xs text-subtle">{s.label}</dt>
-                <dd className="mt-1 text-2xl font-semibold tabular-nums">{s.value}</dd>
-              </div>
-            ))}
-          </dl>
         </article>
-      </section>
 
-      {/* ── Projects ── */}
-      <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
-        <SectionHead kicker="More work" title="Selected projects" intro="Real products for real users, from AI tools to e-commerce." />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((p) => (
-            <article key={p.slug} className="reveal group flex flex-col overflow-hidden rounded-3xl border border-line bg-surface">
-              <div className="overflow-hidden border-b border-line">
-                <Image
-                  src={p.image}
-                  alt={p.imageAlt}
-                  width={1440}
-                  height={900}
-                  className="aspect-[16/10] w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <p className="font-mono text-xs uppercase tracking-wider text-accent">{p.tagline}</p>
-                <h3 className="mt-2 text-xl font-semibold">{p.name}</h3>
-                <p className="mt-3 text-sm text-muted">{p.description}</p>
-                <ul className="mt-4 space-y-1.5 text-sm text-muted">
-                  {p.highlights.map((h) => (
-                    <li key={h} className="flex gap-2">
-                      <span className="mt-2 size-1 shrink-0 rounded-full bg-subtle" aria-hidden />
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {p.stack.map((s) => (
-                    <Chip key={s}>{s}</Chip>
-                  ))}
-                </div>
-                <div className="mt-auto flex gap-4 pt-6 text-sm font-medium">
-                  {p.live && (
-                    <a href={p.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-fg hover:text-accent">
-                      Live site <ArrowUpRight className="size-4" />
-                    </a>
-                  )}
-                  {p.code ? (
-                    <a href={p.code} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-muted hover:text-fg">
-                      <Github className="size-4" /> Code
-                    </a>
-                  ) : (
-                    <span className="text-subtle">Private code</span>
-                  )}
-                </div>
-              </div>
-            </article>
+        <div className="mt-16">
+          {projects.map((p, i) => (
+            <ProjectRow key={p.slug} p={p} n={i + 2} />
           ))}
         </div>
 
-        {/* Earlier work */}
-        <div className="mt-16">
-          <h3 className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-subtle">Earlier work</h3>
-          <div className="grid gap-4 sm:grid-cols-3">
+        <div className="border-t border-line pt-8">
+          <p className="label text-subtle">Earlier, smaller builds</p>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-3">
             {earlier.map((e) => (
-              <a
-                key={e.name}
-                href={e.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="reveal group flex items-center gap-4 rounded-2xl border border-line bg-surface p-3 transition-colors hover:border-accent"
-              >
-                <Image src={e.image} alt="" width={160} height={100} className="h-14 w-20 shrink-0 rounded-lg border border-line object-cover object-top" />
-                <span className="min-w-0">
-                  <span className="flex items-center gap-1 text-sm font-medium">
-                    {e.name} <ArrowUpRight className="size-3.5 text-subtle group-hover:text-accent" />
+              <li key={e.name} className="min-w-0">
+                <a href={e.live} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 border border-line p-2.5 transition-colors hover:border-fg">
+                  <Image src={e.image} alt="" width={160} height={100} className="h-12 w-16 shrink-0 border border-line object-cover object-top" />
+                  <span className="min-w-0">
+                    <span className="flex items-center gap-1 text-sm font-medium">
+                      {e.name} <ArrowUpRight className="size-3.5 text-subtle group-hover:text-accent" />
+                    </span>
+                    <span className="block truncate text-xs text-subtle">{e.description}</span>
                   </span>
-                  <span className="block truncate text-xs text-subtle">{e.description}</span>
-                </span>
-              </a>
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* ── Skills ── */}
-      <section id="skills" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <SectionHead kicker="Skills" title="What I work with" intro="The tools behind the projects above, used every day in production." />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {skills.map((g) => (
-            <div key={g.group} className="reveal rounded-2xl border border-line bg-surface p-5">
-              <h3 className="text-sm font-semibold">{g.group}</h3>
-              <ul className="mt-3 space-y-1.5 text-sm text-muted">
-                {g.items.map((i) => (
-                  <li key={i}>{i}</li>
-                ))}
-              </ul>
+      {/* ── 02 How I work ── */}
+      <section id="approach" className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <SectionHead n="02" kicker="How I work" title="Three rules I build by." />
+        <div className="grid md:grid-cols-3">
+          {principles.map((p, i) => (
+            <div key={p.title} className={`reveal border-t border-line py-6 md:border-t-0 md:py-0 ${i ? "md:border-l md:pl-8" : ""} ${i < 2 ? "md:pr-8" : ""}`}>
+              <p className="font-mono text-xs text-accent">{String(i + 1).padStart(2, "0")}</p>
+              <h3 className="display mt-2 text-2xl">{p.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted">{p.text}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── About ── */}
-      <section id="about" className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr]">
-          <SectionHead kicker="About" title="From history to building software" />
-          <div className="reveal space-y-5 text-muted">
+      {/* ── 03 Notes ── */}
+      <section id="notes" className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <SectionHead n="03" kicker="Notes" title="What running a live product taught me." intro="Short technical write-ups from building and operating Vantage Gold." />
+        <ul>
+          {notes.map((n) => (
+            <li key={n.slug} className="border-t border-line last:border-b">
+              <Link href={`/notes/${n.slug}`} className="group grid gap-2 py-6 sm:grid-cols-[9.5rem_1fr_auto] sm:gap-6">
+                <span className="font-mono text-xs text-subtle sm:pt-2">{formatDate(n.date)}</span>
+                <span>
+                  <span className="display block text-2xl transition-colors group-hover:text-accent sm:text-3xl">{n.title}</span>
+                  <span className="mt-1 block text-sm text-muted">{n.summary}</span>
+                </span>
+                <span className="flex items-center gap-1 font-mono text-xs text-subtle sm:pt-2">
+                  {n.readMinutes} min read <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* ── 04 Experience ── */}
+      <section id="experience" className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
+        <SectionHead n="04" kicker="Experience and education" title="From history graduate to product builder." />
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.6fr]">
+          <div className="space-y-4 text-muted">
             <p>
-              I studied History and International Studies, and that background still shapes how I work: I care about
-              the people who will use what I build, and I write and design for them, not for other developers.
+              I studied History and International Studies, and that background still shapes how I work: I write and
+              design for the people who will use what I build.
             </p>
             <p>
-              My curiosity about how the internet works led me into code through the Product Hub Africa front-end
-              bootcamp. Since then I have moved from static pages to full products: Next.js applications with
-              databases, payments, scheduled jobs, AI models and automated social media.
+              A front-end bootcamp at Product Hub Africa started the coding. Since then I have moved from static pages
+              to complete products with databases, payments, scheduled jobs and AI, while running my own small
+              business and completing national service.
             </p>
-            <p>
-              Vantage Gold is the best example. I built and run it end to end: the prediction engine, the public
-              results ledger, the admin panel, the payment flow and the daily automation behind it.
-            </p>
-            <p>Away from the keyboard, I follow football closely, read widely and play the occasional video game.</p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button href={profile.cv}>
+                View the CV <ArrowRight className="size-4" />
+              </Button>
+            </div>
+          </div>
+          <div>
+            <p className="label text-subtle">Experience</p>
+            <div className="mt-3">
+              <Timeline items={experience} />
+            </div>
+            <p className="label mt-10 text-subtle">Education</p>
+            <div className="mt-3 border-b border-line">
+              <Timeline items={education} />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Contact ── */}
-      <section id="contact" className="mx-auto max-w-6xl px-5 pb-24 pt-12 sm:px-8">
-        <div className="reveal grid gap-10 rounded-3xl border border-line bg-surface p-6 sm:p-10 lg:grid-cols-[1fr_1.2fr]">
+      {/* ── 05 Contact ── */}
+      <section id="contact" className="mx-auto max-w-6xl px-5 pb-24 pt-16 sm:px-8">
+        <SectionHead n="05" kicker="Contact" title="Have a role or a project in mind?" />
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr]">
           <div>
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-accent">Contact</p>
-            <h2 className="text-3xl font-semibold tracking-tight">Let&apos;s build something.</h2>
-            <p className="mt-4 text-muted">
-              Have a product in mind or a role to fill? Send a message and I will reply within a day.
-            </p>
-            <a href={`mailto:${profile.email}`} className="mt-6 inline-block font-medium text-fg underline decoration-accent underline-offset-4">
+            <p className="text-muted">I am open to {profile.openTo.toLowerCase()}. Send a message and I will reply within a day.</p>
+            <a href={`mailto:${profile.email}`} className="display mt-6 inline-block break-all text-2xl underline decoration-accent decoration-1 underline-offset-[6px] sm:text-3xl">
               {profile.email}
             </a>
-            <SocialLinks className="mt-6" />
+            <SocialLinks className="mt-8" />
           </div>
           <ContactForm />
         </div>

@@ -6,7 +6,7 @@ import { Loader2, Send } from "lucide-react";
 type State = "idle" | "sending" | "sent" | "error";
 
 const FIELD =
-  "w-full rounded-xl border border-line bg-bg px-4 py-3 text-sm text-fg placeholder:text-subtle outline-none transition-colors focus:border-accent";
+  "w-full border border-line bg-bg px-4 py-3 text-sm text-fg placeholder:text-subtle outline-none transition-colors focus:border-accent";
 
 export function ContactForm() {
   const [state, setState] = useState<State>("idle");
@@ -36,7 +36,7 @@ export function ContactForm() {
 
   if (state === "sent") {
     return (
-      <div className="flex flex-col items-start justify-center rounded-2xl border border-line bg-raised p-8">
+      <div className="flex flex-col items-start justify-center border border-line bg-raised p-8">
         <p className="text-lg font-semibold">Thank you, your message is on its way.</p>
         <p className="mt-2 text-sm text-muted">I will reply to the email address you gave.</p>
         <button type="button" onClick={() => setState("idle")} className="mt-6 text-sm font-medium text-accent">
@@ -65,14 +65,14 @@ export function ContactForm() {
       {/* Bots fill every field; people never see this one. */}
       <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
       {state === "error" && (
-        <p role="alert" className="text-sm text-red-400">
+        <p role="alert" className="text-sm text-accent">
           {error} You can also email me directly.
         </p>
       )}
       <button
         type="submit"
         disabled={state === "sending"}
-        className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-fg transition-opacity hover:opacity-90 disabled:opacity-60"
+        className="inline-flex items-center gap-2 bg-fg px-6 py-3 text-sm font-medium text-bg transition-colors hover:bg-accent hover:text-accent-fg disabled:opacity-60"
       >
         {state === "sending" ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
         {state === "sending" ? "Sending…" : "Send message"}

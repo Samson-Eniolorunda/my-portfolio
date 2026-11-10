@@ -26,7 +26,7 @@ export function SocialLinks({ className = "" }: { className?: string }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={ICONS[k].label}
-          className="flex size-10 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-accent hover:text-fg"
+          className="flex size-9 items-center justify-center border border-line text-muted transition-colors hover:border-fg hover:text-fg"
         >
           <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
             <path d={ICONS[k].path} />
