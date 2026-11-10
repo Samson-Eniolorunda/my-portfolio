@@ -14,8 +14,12 @@ const SUMMARY =
 
 const host = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
 
-function Heading({ children }: { children: React.ReactNode }) {
-  return <h2 className="label mt-7 border-b border-fg pb-1 text-fg print:mt-5">{children}</h2>;
+function Heading({ children, id }: { children: React.ReactNode; id?: string }) {
+  return (
+    <h2 id={id} className="label mt-7 scroll-mt-20 border-b border-fg pb-1 text-fg print:mt-5">
+      {children}
+    </h2>
+  );
 }
 
 export default function CvPage() {
@@ -86,7 +90,7 @@ export default function CvPage() {
         ))}
       </ul>
 
-      <Heading>Skills</Heading>
+      <Heading id="skills">Skills</Heading>
       <dl className="mt-2 space-y-1 text-sm">
         {cvSkills.map((s) => (
           <div key={s.group} className="grid gap-x-4 sm:grid-cols-[12rem_1fr] print:grid-cols-[12rem_1fr]">

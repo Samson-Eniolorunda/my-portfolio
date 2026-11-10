@@ -12,7 +12,7 @@ const FACTS = [
   ["Now", "Running Vantage Gold"],
   ["Based in", "Lagos, Nigeria (WAT)"],
   ["Open to", profile.openTo],
-  ["Main tools", "TypeScript · Next.js · PostgreSQL · Gemini"],
+  ["Core stack", "Next.js · TypeScript · PostgreSQL · Gemini · Apps Script"],
 ];
 
 function ProjectRow({ p, n }: { p: Project; n: number }) {
@@ -127,7 +127,14 @@ export default function Home() {
           {FACTS.map(([k, v]) => (
             <div key={k} className="bg-bg py-4 sm:px-4">
               <dt className="label text-subtle">{k}</dt>
-              <dd className="mt-1 text-sm">{v}</dd>
+              <dd className="mt-1 text-sm">
+                {v}
+                {k === "Core stack" && (
+                  <Link href="/cv#skills" className="mt-1 block text-xs text-muted underline decoration-line underline-offset-4 hover:text-fg">
+                    All skills
+                  </Link>
+                )}
+              </dd>
             </div>
           ))}
         </dl>
