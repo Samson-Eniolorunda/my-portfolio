@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* Theme tokens: dark by default, light with <html class="light">. */
+:root {
+  --bg: #08090c;
+  --surface: #101218;
+  --raised: #151821;
+  --line: #22262f;
+  --fg: #eef0f4;
+  --muted: #a4abb8;
+  --subtle: #6f7685;
+  --accent: #8b7cff;
+  --accent-soft: rgba(139, 124, 255, 0.14);
+  --accent-fg: #0b0a14;
+  --glow: rgba(139, 124, 255, 0.22);
+}
+html.light {
+  --bg: #f7f7fa;
+  --surface: #ffffff;
+  --raised: #f1f2f6;
+  --line: #e3e5ec;
+  --fg: #12141a;
+  --muted: #4c5262;
+  --subtle: #7a8191;
+  --accent: #5b47f0;
+  --accent-soft: rgba(91, 71, 240, 0.1);
+  --accent-fg: #ffffff;
+  --glow: rgba(91, 71, 240, 0.12);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+::selection {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+/* Soft glow behind the hero. */
+.hero-glow {
+  background: radial-gradient(60% 50% at 50% 0%, var(--glow), transparent 70%);
+}
+
+/* Sections ease up as they enter (none for people who ask for less motion). */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+  /* Movement only: content is never hidden (screenshots, link previews and
+     crawlers read the page without scrolling). */
+  @keyframes reveal {
+    from {
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
