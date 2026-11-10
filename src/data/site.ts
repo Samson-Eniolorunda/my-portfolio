@@ -205,12 +205,12 @@ export const experience: Role[] = [
     ],
   },
   {
-    org: "National Youth Service Corps (NYSC)",
-    title: "Corps member",
+    org: "Raphnik Corporate Limited",
+    title: "Administrative Officer (NYSC)",
     place: "Lagos",
     dates: "Jun 2025 – May 2026",
     points: [
-      "Completed the one-year national service, handling administrative duties and monthly clearance documentation, while building software in my own time.",
+      "Completed my one-year National Youth Service Corps (NYSC) service as the company's administrative officer, handling day-to-day administrative duties and supporting supervisors, while building software in my own time.",
     ],
   },
   {
