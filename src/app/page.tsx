@@ -6,6 +6,7 @@ import { formatDate, notes } from "@/data/notes";
 import { ContactForm } from "@/components/ContactForm";
 import { SocialLinks } from "@/components/SocialLinks";
 import { Button, SectionHead, Stack } from "@/components/ui";
+import { SheetSketch } from "@/components/SheetSketch";
 
 const FACTS = [
   ["Now", "Running Vantage Gold"],
@@ -13,32 +14,6 @@ const FACTS = [
   ["Open to", profile.openTo],
   ["Main tools", "TypeScript · Next.js · PostgreSQL · Gemini"],
 ];
-
-/** A drawn spreadsheet for the client project that has no public screen. */
-function SheetSketch() {
-  const rows = [
-    ["Booking", "Client", "Service", "Invoice"],
-    ["0001", "Client A", "Weekly", "Sent"],
-    ["0002", "Client B", "One-off", "Sent"],
-    ["0003", "Client C", "Weekly", "Due"],
-    ["0004", "Client D", "Monthly", "Draft"],
-  ];  return (
-    <div className="relative flex aspect-[16/10] w-full items-center justify-center bg-raised p-5">
-      <div aria-hidden className="w-full border border-line bg-surface font-mono text-[11px]">
-        {rows.map((r, i) => (
-          <div key={r[0]} className={`grid grid-cols-[0.8fr_1.6fr_0.8fr_0.8fr] ${i ? "border-t border-line text-muted" : "bg-raised text-fg"}`}>
-            {r.map((c, j) => (
-              <span key={j} className={`truncate px-2 py-1.5 ${j ? "border-l border-line" : ""} ${c === "Due" ? "text-accent" : ""}`}>
-                {c}
-              </span>
-            ))}
-          </div>
-        ))}
-      </div>
-      <p className="label absolute bottom-2 right-3 text-[0.6rem] text-subtle">Illustration · system is private</p>
-    </div>
-  );
-}
 
 function ProjectRow({ p, n }: { p: Project; n: number }) {
   return (
@@ -61,6 +36,11 @@ function ProjectRow({ p, n }: { p: Project; n: number }) {
         </ul>
         <Stack items={p.stack} className="mt-5" />
         <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium">
+          {p.caseStudy && (
+            <Link href={p.caseStudy} className="inline-flex items-center gap-1 underline decoration-accent underline-offset-4">
+              Read the case study <ArrowRight className="size-4" />
+            </Link>
+          )}
           {p.live && (
             <a href={p.live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline decoration-line underline-offset-4 hover:decoration-accent">
               Live site <ArrowUpRight className="size-4" />

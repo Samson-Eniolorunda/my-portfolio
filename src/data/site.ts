@@ -38,6 +38,7 @@ export interface Project {
   code?: string;
   /** Shown instead of a code link when the code is not public. */
   note?: string;
+  caseStudy?: string;
 }
 
 export const featured = {
@@ -83,16 +84,18 @@ export const projects: Project[] = [
   {
     slug: "krystal-klean",
     name: "Krystal Klean Solution (UK)",
-    kind: "Business automation · client work",
+    kind: "Business back office · 3-month contract",
+    year: "2025",
     summary:
-      "A booking and revenue tracking system for a UK facilities management company, built on Google Sheets and Google Apps Script so the team could keep working in tools they already knew.",
+      "The back office of a UK cleaning company, built inside the Google Sheet the team already used: bookings and pricing, invoices, client and staff emails, calendars, payroll, staff onboarding and Zoom interviews.",
     points: [
-      "Bookings, revenue and outstanding payments tracked in one place",
-      "Invoices generated automatically instead of written up one by one",
-      "Volunteered after seeing how much administrative time it would save",
+      "One click turns a booking, or several, into a branded PDF invoice filed in the client's Drive folder",
+      "Outlook email and calendar through Microsoft Graph; Zoom meetings with calendar invites for staff and interviews",
+      "Fortnightly payroll from logged jobs, a live revenue dashboard and a self-updating staff list",
     ],
-    stack: ["Google Apps Script", "Google Sheets", "JavaScript"],
+    stack: ["Google Apps Script", "Microsoft Graph", "Zoom API", "OAuth 2.0", "Google Sheets, Docs, Drive and Forms"],
     note: "Private client system",
+    caseStudy: "/projects/krystal-klean",
   },
   {
     slug: "lingerie-by-sisioyin",
@@ -184,7 +187,7 @@ export const experience: Role[] = [
     org: "Vantage Gold",
     title: "Founder and developer",
     place: "Lagos · remote",
-    dates: "2026 – present",
+    dates: "Apr 2026 – present",
     points: [
       "Designed, built and operate a live AI sports-prediction platform covering six sports, with 900+ picks graded automatically in its latest 30 days and published on a public ledger.",
       "Run 20+ scheduled jobs for data collection, predictions, settlement, booking codes and posts to five social platforms.",
@@ -193,21 +196,12 @@ export const experience: Role[] = [
   },
   {
     org: "Krystal Klean Solution (UK)",
-    title: "Volunteer technical consultant",
+    title: "Technical consultant (contract)",
     place: "Remote",
-    dates: "",
+    dates: "Oct 2025 – Dec 2025",
     points: [
-      "Built a booking and revenue tracking system on Google Sheets and Google Apps Script that generates invoices automatically.",
-    ],
-  },
-  {
-    org: "BTB Cooking Gas Solutions",
-    title: "Owner and operations manager",
-    place: "Lagos",
-    dates: "2022 – present",
-    points: [
-      "Run daily operations: customer orders, inventory, delivery routing and digital records of sales and expenses.",
-      "Resolve customer enquiries and operational problems directly, which shapes how I build software for real users.",
+      "Built the company's back office in Google Apps Script (about 7,600 lines): bookings with automatic pricing, PDF invoices, revenue dashboard and fortnightly payroll.",
+      "Connected Outlook email and calendar (Microsoft Graph) and Zoom, so invoices, staff assignments, payment reminders and interview invites go out from the sheet.",
     ],
   },
   {
@@ -217,6 +211,16 @@ export const experience: Role[] = [
     dates: "Jun 2025 – May 2026",
     points: [
       "Completed the one-year national service, handling administrative duties and monthly clearance documentation, while building software in my own time.",
+    ],
+  },
+  {
+    org: "BTB Cooking Gas Solutions",
+    title: "Owner and operations manager",
+    place: "Lagos",
+    dates: "Apr 2024 – present",
+    points: [
+      "Run daily operations: customer orders, inventory, delivery routing and digital records of sales and expenses.",
+      "Resolve customer enquiries and operational problems directly, which shapes how I build software for real users.",
     ],
   },
 ];
@@ -243,7 +247,8 @@ export const cvSkills: { group: string; items: string }[] = [
   { group: "Languages and frameworks", items: "TypeScript, JavaScript, React, Next.js (App Router), HTML, CSS, Tailwind CSS, Bootstrap" },
   { group: "Data and back end", items: "PostgreSQL, Prisma, Supabase, Redis, REST APIs, scheduled jobs, web push" },
   { group: "AI", items: "Google Gemini (reasoning, structured output, image generation), prompt design, AI cost control" },
-  { group: "Tools and platforms", items: "Git and GitHub, Vercel, Sentry, Playwright, Google Apps Script, Chrome DevTools" },
+  { group: "Integrations", items: "Microsoft Graph (Outlook mail and calendar), Zoom API, OAuth 2.0, Google Workspace (Apps Script, Sheets, Docs, Drive, Forms)" },
+  { group: "Tools and platforms", items: "Git and GitHub, Vercel, Sentry, Playwright, Chrome DevTools" },
   { group: "AI-assisted development", items: "Daily use of Claude and GitHub Copilot under a written plan, with review and automated checks" },
   { group: "Business", items: "Customer service, order processing, logistics and inventory, from running my own business" },
 ];

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 const FACTS = [
   ["Role", "Founder, sole designer and developer"],
-  ["Timeline", "March 2026 – now, live daily"],
+  ["Timeline", "April 2026 – now, live daily"],
   ["Scope", "Product, data, AI, payments, operations"],
   ["Way of working", "AI-assisted, with review and checks"],
 ];
