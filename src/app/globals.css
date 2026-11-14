@@ -62,34 +62,38 @@ body {
   color: var(--accent-fg);
 }
 
-/* Display headings: the serif carries the identity. */
-.display {
-  font-family: var(--font-display-serif), Georgia, serif;
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.02;
-}
+/* Shared classes live in the components layer, so utilities on the same
+   element (for example a text size) still win. */
+@layer components {
+  /* Display headings: the serif carries the identity. */
+  .display {
+    font-family: var(--font-display-serif), Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+  }
 
-/* Small mono labels used for section numbers and metadata. */
-.label {
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+  /* Small mono labels used for section numbers and metadata. */
+  .label {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-/* Long-form text (notes). */
-.prose-note p {
-  margin-top: 1.1em;
-  line-height: 1.75;
-  color: var(--muted);
-}
-.prose-note h2 {
-  margin-top: 2.2em;
-  font-family: var(--font-display-serif), Georgia, serif;
-  font-size: 1.75rem;
-  line-height: 1.15;
-  color: var(--fg);
+  /* Long-form text (notes). */
+  .prose-note p {
+    margin-top: 1.1em;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+  .prose-note h2 {
+    margin-top: 2.2em;
+    font-family: var(--font-display-serif), Georgia, serif;
+    font-size: 1.75rem;
+    line-height: 1.15;
+    color: var(--fg);
+  }
 }
 
 /* Sections ease up as they enter (none for people who ask for less motion). */
